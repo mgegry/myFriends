@@ -2,8 +2,12 @@ import { KeyOutlined, PersonOutlineOutlined, Visibility, VisibilityOff } from "@
 import { FormControl, TextField, Stack, Button, Typography, InputAdornment, IconButton } from "@mui/material";
 import { Box, Container } from "@mui/system";
 import React from "react";
+import authService from "../services/authentication/auth.service";
 
 function Login() {
+
+    const [username, setUsername] = React.useState("");
+    const [password, setPassword] = React.useState("");
 
     const [showPassword, setShowPassword] = React.useState(false);
 
@@ -12,6 +16,12 @@ function Login() {
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
+
+    function handleLogin() {
+        var x = authService.login(username, password);
+        console.log(x)
+        console.log(localStorage.getItem('user'))
+    }
 
     return (
         <Container maxWidth="sm">
@@ -30,6 +40,7 @@ function Login() {
                                         id="username-field"
                                         variant="outlined"
                                         label="Username"
+                                        onChange={(newValue) => setUsername(newValue.target.value)}
                                         InputProps={{
                                             startAdornment: (
                                                 <InputAdornment position="start">
@@ -43,6 +54,7 @@ function Login() {
                                         variant="outlined"
                                         label="Password"
                                         type={showPassword ? 'text' : 'password'}
+                                        onChange={(newValue) => setPassword(newValue.target.value)}
                                         InputProps={{
                                             startAdornment: (
                                                 <InputAdornment position="start">
@@ -63,7 +75,7 @@ function Login() {
 
                                         }}
                                     />
-                                    <Button variant="contained">Sign In</Button>
+                                    <Button variant="contained" onClick={() => { handleLogin() }}>Sign In</Button>
                                 </Stack>
                             </FormControl>
                         </Stack>
@@ -78,7 +90,6 @@ function Login() {
                     </Box>
                 </Stack>
             </Box>
-
         </Container >
     );
 };
