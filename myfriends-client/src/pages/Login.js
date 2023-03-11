@@ -1,13 +1,17 @@
 import { KeyOutlined, PersonOutlineOutlined, Visibility, VisibilityOff } from "@mui/icons-material";
-import { FormControl, TextField, Stack, Button, Typography, InputAdornment, IconButton } from "@mui/material";
+import { FormControl, TextField, Stack, Button, Typography, InputAdornment, IconButton, Alert, AlertTitle } from "@mui/material";
 import { Box, Container } from "@mui/system";
+import axios from "axios";
 import React from "react";
-import authService from "../services/authentication/auth.service";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
 
     const [username, setUsername] = React.useState("");
     const [password, setPassword] = React.useState("");
+
+    const [loading, setLoading] = React.useState(false);
+    const [requestFail, setRequestFail] = React.useState(null);
 
     const [showPassword, setShowPassword] = React.useState(false);
 
@@ -17,8 +21,37 @@ function Login() {
         event.preventDefault();
     };
 
+    const navigate = useNavigate();
+
     const handleLogin = () => {
-        authService.login(username, password);
+        setLoading(true);
+        axios
+            .post(process.env.REACT_APP_BASE_API_URL + "auth/signin", {
+                username,
+                password
+            })
+            .then((response) => {
+                if (response.data.accessToken) {
+                    localStorage.setItem('user', JSON.stringify(response.data));
+                }
+                setRequestFail(false);
+                navigate('/');
+            })
+            .catch((err) => {
+                setRequestFail(true);
+            })
+            .finally(() => {
+                setLoading(false);
+            })
+    }
+
+    const loginErrorMessage = () => {
+        return (
+            <Alert severity="error" variant="outlined" >
+                <AlertTitle>Error</AlertTitle>
+                Credentials incorrect or user does not exist!
+            </Alert>
+        );
     }
 
     return (
@@ -73,7 +106,8 @@ function Login() {
 
                                         }}
                                     />
-                                    <Button variant="contained" onClick={() => { handleLogin() }}>Sign In</Button>
+                                    <Button variant="contained" onClick={() => { handleLogin() }} disabled={loading}>Sign In</Button>
+                                    {requestFail != null && requestFail ? loginErrorMessage() : null}
                                 </Stack>
                             </FormControl>
                         </Stack>
