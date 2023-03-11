@@ -1,10 +1,11 @@
 import { InputAdornment, TextField } from "@mui/material";
 
 
-const IconTextField = ({ iconStart, iconEnd, InputProps, ...props }) => {
+const IconTextField = ({ iconStart, iconEnd, InputProps, setFieldValueMethod, ...props }) => {
     return (
         <TextField
             {...props}
+            onChange={(newValue) => { setFieldValueMethod(newValue.target.value) }}
             InputProps={{
                 ...InputProps,
                 startAdornment: iconStart ? (

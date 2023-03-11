@@ -17,10 +17,8 @@ function Login() {
         event.preventDefault();
     };
 
-    function handleLogin() {
-        var x = authService.login(username, password);
-        console.log(x)
-        console.log(localStorage.getItem('user'))
+    const handleLogin = () => {
+        authService.login(username, password);
     }
 
     return (

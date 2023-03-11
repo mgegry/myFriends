@@ -28,6 +28,7 @@ import ro.mgegry.myfriends.models.Role;
 import ro.mgegry.myfriends.models.User;
 import ro.mgegry.myfriends.payload.request.LoginRequest;
 import ro.mgegry.myfriends.payload.request.SignupRequest;
+import ro.mgegry.myfriends.payload.response.ErrorMessageResponse;
 import ro.mgegry.myfriends.payload.response.JwtResponse;
 import ro.mgegry.myfriends.payload.response.MessageResponse;
 import ro.mgegry.myfriends.repositories.RoleRepository;
@@ -80,13 +81,13 @@ public class AuthController {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Username is already taken!"));
+                    .body(new ErrorMessageResponse("username", "Username is already taken!"));
         }
 
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Email is already in use!"));
+                    .body(new ErrorMessageResponse("email", "Email is already in use!"));
         }
 
         // Create new user's account

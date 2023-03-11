@@ -1,12 +1,12 @@
 import axios from "axios";
 
-const AUTH_API_URL = process.env.REACT_APP_BASE_API_URL + "/api/auth"
+const AUTH_API_URL = process.env.REACT_APP_BASE_API_URL + "auth/"
 
 class AuthService {
 
     login(username, password) {
 
-        return axios.post(AUTH_API_URL + "/signin", {
+        return axios.post(AUTH_API_URL + "signin", {
             username,
             password
         })
@@ -23,12 +23,15 @@ class AuthService {
         localStorage.removeItem("user");
     }
 
-    register(username, email, password) {
-        return axios.post(AUTH_API_URL + "/signup", {
+    register(firstname, lastname, username, email, password) {
+        return axios.post(AUTH_API_URL + "signup", {
+            firstname,
+            lastname,
             username,
             email,
             password
-        });
+        }).then(response => { return response.data })
+            .catch((err) => { console.log(err.response.data) });
     }
 
     getCurrentUser() {
