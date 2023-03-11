@@ -1,5 +1,5 @@
-import { Error, ReportProblemOutlined } from "@mui/icons-material";
-import { Alert, AlertTitle, Button, Grid, Icon, Typography } from "@mui/material";
+import { ReportProblemOutlined } from "@mui/icons-material";
+import { Alert, AlertTitle, Button, Grid } from "@mui/material";
 import { Stack } from "@mui/system";
 
 const Unauthorized = () => {
@@ -10,7 +10,6 @@ const Unauthorized = () => {
             <Grid item xs={8}>
                 <Stack direction={"column"} spacing={1}>
                     <Alert
-                        // icon={<ReportProblemOutlined sx={{ fontSize: "3rem" }} />}
                         icon={false}
                         severity="info"
                         sx={{ height: "35vh", fontSize: "2rem" }}
