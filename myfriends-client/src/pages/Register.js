@@ -14,7 +14,6 @@ function Register() {
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
 
-    const [data, setData] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState(null);
     const [requestFail, setRequestFail] = React.useState(null);
@@ -40,7 +39,6 @@ function Register() {
                 password,
             })
             .then((response) => {
-                setData(response.data);
                 setRequestFail(false);
                 setTimeout(() => { navigate("/login"); }, 1000);
             })
