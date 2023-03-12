@@ -1,4 +1,4 @@
-package ro.mgegry.myfriends.services.payload;
+package ro.mgegry.myfriends.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
