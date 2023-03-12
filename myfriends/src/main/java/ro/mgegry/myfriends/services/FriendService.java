@@ -10,6 +10,7 @@ import ro.mgegry.myfriends.repositories.FriendRepository;
 import ro.mgegry.myfriends.repositories.UserRepository;
 import ro.mgegry.myfriends.security.jwt.JwtUtils;
 import ro.mgegry.myfriends.services.payload.request.DeleteFriendRequest;
+import ro.mgegry.myfriends.services.payload.response.FriendResponse;
 
 import java.util.HashSet;
 import java.util.List;
@@ -33,7 +34,7 @@ public class FriendService {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
-        Set<User> users = new HashSet<>();
+        Set<FriendResponse> users = new HashSet<>();
 
         Optional<User> user = userRepository.findByUsername(username);
 
@@ -42,13 +43,36 @@ public class FriendService {
             List<Friend> friends = friendRepository.findByFirstUser(user.get());
 
             for (Friend friend: friends) {
-                users.add(friend.getSecondUser());
+
+                User gotUser = friend.getSecondUser();
+                FriendResponse toAddFriend = new FriendResponse(
+                        gotUser.getId(),
+                        gotUser.getFirstName(),
+                        gotUser.getLastName(),
+                        gotUser.getUsername(),
+                        gotUser.getEmail(),
+                        friend.getCreatedAt()
+                );
+
+
+                users.add(toAddFriend);
             }
 
             friends = friendRepository.findBySecondUser(user.get());
 
             for (Friend friend: friends) {
-                users.add(friend.getFirstUser());
+                User gotUser = friend.getFirstUser();
+                FriendResponse toAddFriend = new FriendResponse(
+                        gotUser.getId(),
+                        gotUser.getFirstName(),
+                        gotUser.getLastName(),
+                        gotUser.getUsername(),
+                        gotUser.getEmail(),
+                        friend.getCreatedAt()
+                );
+
+
+                users.add(toAddFriend);
             }
 
             return new ResponseEntity<>(users, HttpStatus.OK);
