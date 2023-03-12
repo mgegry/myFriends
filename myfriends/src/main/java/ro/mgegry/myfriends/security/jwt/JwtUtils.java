@@ -49,4 +49,8 @@ public class JwtUtils {
 
         return false;
     }
+
+    public boolean checkAuthorizationForUsername(String username, String authorization) {
+        return getUserNameFromJwtToken(authorization.substring(7)).equals(username);
+    }
 }

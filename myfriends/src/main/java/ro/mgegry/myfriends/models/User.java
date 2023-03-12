@@ -1,5 +1,6 @@
 package ro.mgegry.myfriends.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -45,6 +46,7 @@ public class User {
 
         @NotBlank
         @Size(max = 120)
+        @JsonIgnore
         private String password;
 
         @Size(max = 255)
@@ -56,6 +58,7 @@ public class User {
         @Column(name = "created_at")
         private Date createdAt;
 
+        @JsonIgnore
         @ManyToMany(fetch = FetchType.LAZY)
         @JoinTable( name = "user_roles",
                 joinColumns = @JoinColumn(name = "user_id"),
