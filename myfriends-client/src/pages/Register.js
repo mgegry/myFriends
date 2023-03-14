@@ -6,6 +6,7 @@ import IconTextField from "../components/IconTextField";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import validation from "../services/validation";
+import { COLORS } from "../values/colors";
 
 function Register() {
 
@@ -129,11 +130,11 @@ function Register() {
 
             <Box sx={{ padding: "5%", height: "100vh" }}>
                 <Stack spacing={2}>
-                    <Box sx={{ border: "1px solid black", p: "10%" }}>
+                    <Box sx={{ border: "1px solid gray", p: "10%", backgroundColor: COLORS.white }}>
 
                         <Stack spacing={7}>
                             <Box width="100%">
-                                <Typography align="center" variant="h4">myFriends</Typography>
+                                <Typography align="center" variant="h4" color={COLORS.textPrimary}><b>myFriends</b></Typography>
                             </Box>
                             <FormControl sx={{ width: "100%" }}>
                                 <Stack spacing={2}>
@@ -236,7 +237,17 @@ function Register() {
 
 
 
-                                    <Button onClick={() => { handleRegister() }} variant="contained" disabled={loading} >Register</Button>
+                                    <Button
+                                        onClick={() => { handleRegister() }}
+                                        variant="contained"
+                                        disabled={loading}
+                                        sx={{
+                                            backgroundColor: COLORS.primary,
+                                            '&:hover': { backgroundColor: "#3951A7" }
+                                        }}
+                                    >
+                                        Register
+                                    </Button>
                                     {
                                         requestFail != null
                                             ? (requestFail)
@@ -249,16 +260,16 @@ function Register() {
                         </Stack>
                     </Box>
 
-                    <Box sx={{ border: "1px solid black", p: "5%" }}>
+                    <Box sx={{ border: "1px solid gray", p: "5%", backgroundColor: COLORS.white }}>
                         <Typography align="center">Already Registered?
-                            <Button href="./login" sx={{ "&:hover": { backgroundColor: "transparent" } }} variant="text">
+                            <Button href="./login" sx={{ "&:hover": { backgroundColor: "transparent", color: "#E2856E" }, color: COLORS.primary }} variant="text">
                                 Sign in
                             </Button>
                         </Typography>
 
                     </Box>
                 </Stack>
-            </Box>
+            </Box >
 
         </Container >
     );

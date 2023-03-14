@@ -1,6 +1,9 @@
-import { Button } from "@mui/material";
+import { Grid } from "@mui/material";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import HomeView from "../components/HomeView";
+import Navigation from "../components/Navigation";
+import { COLORS } from "../values/colors";
 
 const Home = () => {
 
@@ -19,11 +22,27 @@ const Home = () => {
 
 
     if (authenticated) {
+
         return (
-            <>
-                <div>Home</div>
-                <Button onClick={() => { localStorage.removeItem('user'); }} >Fuata</Button>
-            </>
+            <Grid container sx={{ height: "100vh" }}>
+
+                <Grid item xs={2} sx={{ paddingTop: "1vh", backgroundColor: COLORS.white }} >
+                    <Grid container>
+                        <Navigation />
+                    </Grid>
+                </Grid>
+                <Grid
+                    item xs={10}
+                    sx={{
+                        borderLeft: "1px solid gray",
+                        paddingTop: "1vh",
+                        backgroundColor: `${COLORS.secondary}`
+                    }}>
+
+                    <HomeView />
+
+                </Grid>
+            </Grid >
         );
     }
 }

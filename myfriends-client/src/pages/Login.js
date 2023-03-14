@@ -4,6 +4,7 @@ import { Box, Container } from "@mui/system";
 import axios from "axios";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { COLORS } from "../values/colors";
 
 function Login() {
 
@@ -57,13 +58,15 @@ function Login() {
     return (
         <Container maxWidth="sm">
 
-            <Box sx={{ padding: "5%", height: "100vh" }}>
+            <Box sx={{ paddingTop: "10vh", height: "90vh" }}>
                 <Stack spacing={2}>
-                    <Box sx={{ border: "1px solid black", p: "10%" }}>
+                    <Box sx={{ border: "1px solid gray", p: "10%", backgroundColor: COLORS.white }}>
 
                         <Stack spacing={7}>
                             <Box width="100%">
-                                <Typography align="center" variant="h4">myFriends</Typography>
+                                <Typography color={COLORS.textPrimary} align="center" variant="h4">
+                                    <b>myFriends</b>
+                                </Typography>
                             </Box>
                             <FormControl sx={{ width: "100%" }}>
                                 <Stack spacing={2}>
@@ -106,16 +109,23 @@ function Login() {
 
                                         }}
                                     />
-                                    <Button variant="contained" onClick={() => { handleLogin() }} disabled={loading}>Sign In</Button>
+                                    <Button
+                                        variant="contained"
+                                        onClick={() => { handleLogin() }}
+                                        disabled={loading}
+                                        sx={{ backgroundColor: COLORS.primary, '&:hover': { backgroundColor: "#3951A7" } }}
+                                    >
+                                        Sign In
+                                    </Button>
                                     {requestFail != null && requestFail ? loginErrorMessage() : null}
                                 </Stack>
                             </FormControl>
                         </Stack>
                     </Box>
 
-                    <Box sx={{ border: "1px solid black", p: "5%" }}>
+                    <Box sx={{ border: "1px solid gray", p: "5%", backgroundColor: COLORS.white }}>
                         <Typography align="center">Don't have an account?
-                            <Button href="./register" sx={{ "&:hover": { backgroundColor: "transparent" } }} variant="text">
+                            <Button href="./register" sx={{ "&:hover": { backgroundColor: "transparent", color: "#E2856E" }, color: COLORS.primary }} variant="text">
                                 Register
                             </Button>
                         </Typography>
