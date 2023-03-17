@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Grid, List } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import Navigation from "../components/Navigation";
@@ -31,23 +31,8 @@ const Root = () => {
             backgroundColor: COLORS.white,
           }}
         >
-          <Grid container sx={{ position: "fixed" }}>
-            {/* de aici */}
-            <Grid container sx={{ height: "100vh" }}>
-              <Grid
-                item
-                xs={2}
-                sx={{
-                  paddingTop: "1vh",
-                  backgroundColor: COLORS.white,
-                }}
-              >
-                <Grid container sx={{}}>
-                  <Navigation />
-                </Grid>
-              </Grid>
-            </Grid>
-            {/* pana aici */}
+          <Grid container sx={{}}>
+            <Navigation />
           </Grid>
         </Grid>
         <Grid
@@ -58,9 +43,13 @@ const Root = () => {
             paddingTop: "1vh",
             paddingBottom: "1vh",
             backgroundColor: `${COLORS.secondary}`,
+            maxHeight: "100vh",
+            overflow: "auto",
           }}
         >
-          <Outlet />
+          <List>
+            <Outlet />
+          </List>
         </Grid>
       </Grid>
     );

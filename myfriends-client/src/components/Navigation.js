@@ -5,9 +5,20 @@ import { COLORS } from "../values/colors";
 
 import { useNavigate } from "react-router-dom";
 import React from "react";
+import AddPostDialog from "./AddPostDialog";
 
 const Navigation = () => {
   const navigate = useNavigate();
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <Grid container sx={{ alignItems: "center" }}>
@@ -25,6 +36,15 @@ const Navigation = () => {
             hoverBackgroundColor={COLORS.primary}
             onClick={() => {
               navigate("/");
+            }}
+          />
+          <CustomLink
+            title="Add Post"
+            color={COLORS.textSecondary}
+            hoverColor={COLORS.white}
+            hoverBackgroundColor={COLORS.primary}
+            onClick={() => {
+              handleClickOpen();
             }}
           />
           <CustomLink
@@ -66,6 +86,8 @@ const Navigation = () => {
           />
         </Stack>
       </Stack>
+
+      <AddPostDialog handleClose={handleClose} open={open} />
     </Grid>
   );
 };
