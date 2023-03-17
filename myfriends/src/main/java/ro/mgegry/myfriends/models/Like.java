@@ -6,7 +6,10 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Data
-@Table(name = "likes", uniqueConstraints = {})
+@Table( name = "likes",
+        uniqueConstraints = {
+        @UniqueConstraint(name = "uniqueLike", columnNames = {"user_like_id", "post_id"})
+})
 @Entity
 public class Like {
     @Id
