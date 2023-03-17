@@ -10,7 +10,7 @@ import java.util.Date;
 @Entity
 @Table(name = "posts")
 @Data
-public class Post {
+public class Post implements Comparable<Post>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,8 +25,12 @@ public class Post {
     @Column(name = "created_at")
     private Date createdAt;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @Override
+    public int compareTo(Post o) {
+        return createdAt.compareTo(o.createdAt);
+    }
 }

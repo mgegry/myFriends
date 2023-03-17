@@ -17,7 +17,7 @@ public class FriendController {
     @Autowired
     FriendService friendService;
 
-    @PostMapping("/{username}/friends")
+    @GetMapping("/{username}/friends")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getAllFriends(@PathVariable String username,
                                            @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization) {

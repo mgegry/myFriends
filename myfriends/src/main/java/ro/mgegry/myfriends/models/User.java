@@ -44,6 +44,7 @@ public class User {
         @Email
         private String email;
 
+        @JsonIgnore
         @NotBlank
         @Size(max = 120)
         private String password;
@@ -57,6 +58,7 @@ public class User {
         @Column(name = "created_at")
         private Date createdAt;
 
+        @JsonIgnore
         @ManyToMany(fetch = FetchType.LAZY)
         @JoinTable( name = "user_roles",
                 joinColumns = @JoinColumn(name = "user_id"),

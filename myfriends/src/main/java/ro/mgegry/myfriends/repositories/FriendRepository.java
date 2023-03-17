@@ -16,6 +16,9 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
 
     Friend findByFirstUserAndSecondUser(User first, User second);
 
+    @Query("SELECT f FROM Friend f WHERE f.firstUser = ?1 OR f.secondUser = ?1")
+    List<Friend> findAllFriendsForUser(User user);
+
     List<Friend> findByFirstUser(User user);
     List<Friend> findBySecondUser(User user);
 
