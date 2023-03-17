@@ -27,11 +27,27 @@ const Root = () => {
           xs={2}
           sx={{
             paddingTop: "1vh",
+            paddingBottom: "1vh",
             backgroundColor: COLORS.white,
           }}
         >
-          <Grid container>
-            <Navigation />
+          <Grid container sx={{ position: "fixed" }}>
+            {/* de aici */}
+            <Grid container sx={{ height: "100vh" }}>
+              <Grid
+                item
+                xs={2}
+                sx={{
+                  paddingTop: "1vh",
+                  backgroundColor: COLORS.white,
+                }}
+              >
+                <Grid container sx={{}}>
+                  <Navigation />
+                </Grid>
+              </Grid>
+            </Grid>
+            {/* pana aici */}
           </Grid>
         </Grid>
         <Grid
@@ -40,6 +56,7 @@ const Root = () => {
           sx={{
             borderLeft: "1px solid gray",
             paddingTop: "1vh",
+            paddingBottom: "1vh",
             backgroundColor: `${COLORS.secondary}`,
           }}
         >
