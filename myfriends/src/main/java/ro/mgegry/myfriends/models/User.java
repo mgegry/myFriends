@@ -71,6 +71,11 @@ public class User {
         @JoinColumn(name = "user_id")
         private List<Post> posts;
 
+        @JsonIgnore
+        @OneToMany
+        @JoinColumn(name = "user_id")
+        private List<Comment> comments;
+
         public User(String username, String email, String password) {
                 this.username = username;
                 this.email = email;

@@ -6,6 +6,7 @@ import lombok.Data;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "posts")
@@ -30,6 +31,11 @@ public class Post implements Comparable<Post>{
     @ManyToOne
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
+
+    @JsonIgnore
+    @OneToMany
+    @JoinColumn(name = "post_id")
+    private List<Comment> comments;
 
     @Override
     public int compareTo(Post o) {

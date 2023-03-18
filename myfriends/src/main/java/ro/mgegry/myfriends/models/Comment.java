@@ -21,11 +21,17 @@ public class Comment {
     private Date createdAt;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    User user;
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    private User user;
+
+    @Column(name = "user_id")
+    private Long userId;
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "post_id")
-    Post post;
+    @JoinColumn(name = "post_id", insertable = false, updatable = false)
+    private Post post;
+
+    @Column(name = "post_id")
+    private Long postId;
 }
