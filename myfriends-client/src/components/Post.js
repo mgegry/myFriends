@@ -20,7 +20,8 @@ import axios from "axios";
 import { useState } from "react";
 import authHeader from "../services/authentication/auth-header";
 
-const Post = ({ post }) => {
+const Post = ({ postEntity }) => {
+  const [post, setPost] = useState(postEntity);
   const [commentText, setCommentText] = useState("");
 
   const postedBy = post.post.user.username;
@@ -79,7 +80,17 @@ const Post = ({ post }) => {
         body,
         config
       )
-      .then((response) => {})
+      .then((response) => {
+        axios
+          .get(
+            process.env.REACT_APP_BASE_API_URL + `posts/${post.post.id}`,
+            config
+          )
+          .then((response) => {
+            setPost(response.data);
+            setCommentText("");
+          });
+      })
       .catch((err) => {})
       .finally(() => {});
   };
@@ -165,6 +176,7 @@ const Post = ({ post }) => {
             variant="standard"
             label="Add comment"
             fullWidth
+            value={commentText}
             onChange={(event) => {
               setCommentText(event.target.value);
             }}

@@ -18,7 +18,6 @@ const Home = () => {
       .get("http://localhost:8080/api/wall", config)
       .then((response) => {
         setPosts(response.data);
-        console.log(response.data);
       })
       .catch((err) => {})
       .finally(() => {});
@@ -30,7 +29,7 @@ const Home = () => {
         <SearchBar />
         <Stack sx={{ width: "35%" }} spacing={3}>
           {posts.map((post) => {
-            return <Post key={post.post.id} post={post} />;
+            return <Post key={post.post.id} postEntity={post} />;
           })}
         </Stack>
       </Stack>

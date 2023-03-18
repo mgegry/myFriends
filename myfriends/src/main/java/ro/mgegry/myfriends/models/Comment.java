@@ -9,7 +9,7 @@ import java.util.Date;
 @Data
 @Entity
 @Table(name = "comments")
-public class Comment {
+public class Comment implements Comparable<Comment> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,4 +34,9 @@ public class Comment {
 
     @Column(name = "post_id")
     private Long postId;
+
+    @Override
+    public int compareTo(Comment o) {
+        return createdAt.compareTo(o.createdAt);
+    }
 }

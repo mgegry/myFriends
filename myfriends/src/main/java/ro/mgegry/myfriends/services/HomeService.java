@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import ro.mgegry.myfriends.models.Comment;
 import ro.mgegry.myfriends.models.Friend;
 import ro.mgegry.myfriends.models.Post;
 import ro.mgegry.myfriends.models.User;
@@ -68,10 +69,13 @@ public class HomeService {
         List<PostResponse> postResponses = new ArrayList<>();
         for (Post p : posts) {
 
+            List<Comment> comments = commentRepository.findByPost(p);
+            comments.sort(Collections.reverseOrder());
+
             postResponses.add(new PostResponse(
                     p,
                     likeRepository.findByPost(p),
-                    commentRepository.findByPost(p)
+                    comments
             ));
         }
 

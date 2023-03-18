@@ -30,4 +30,10 @@ public class PostController {
         return postService.addPostForUser(post, username, authorization);
     }
 
+    @GetMapping("/posts/{postId}")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> getPostById(@PathVariable Long postId) {
+        return postService.getPostById(postId);
+    }
+
 }
