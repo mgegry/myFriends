@@ -19,6 +19,7 @@ import { Stack } from "@mui/system";
 import axios from "axios";
 import { useState } from "react";
 import authHeader from "../services/authentication/auth-header";
+import dateUtils from "../utils/dateUtils";
 
 const Post = ({ postEntity }) => {
   const [post, setPost] = useState(postEntity);
@@ -32,34 +33,6 @@ const Post = ({ postEntity }) => {
   const numberOfComments = post.comments.length;
   const comments = post.comments;
   const imageUrl = post.post.imageUrl;
-
-  const getDateAndTime = (value) => {
-    value = new Date(value);
-
-    var minutes = value.getMinutes().toString();
-    var hours = value.getHours().toString();
-
-    if (value.getMinutes().toString().length === 1) {
-      minutes = "0" + minutes;
-    }
-
-    if (value.getHours.toString().length === 1) {
-      hours = "0" + hours;
-    }
-
-    const postedAt =
-      hours +
-      ":" +
-      minutes +
-      " " +
-      value.getDate().toString() +
-      "/" +
-      value.getMonth().toString() +
-      "/" +
-      value.getFullYear().toString();
-
-    return postedAt;
-  };
 
   const handleAddComment = () => {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -102,7 +75,7 @@ const Post = ({ postEntity }) => {
       <CardHeader
         avatar={<Avatar></Avatar>}
         title={<b>{postedBy}</b>}
-        subheader={getDateAndTime(post.post.createdAt)}
+        subheader={dateUtils.getDateAndTime(post.post.createdAt)}
       />
       <CardMedia component="img" image={imageUrl} />
       <CardContent>
@@ -161,7 +134,7 @@ const Post = ({ postEntity }) => {
                         <b>{comment.user.username}</b>
                       </Typography>
                       <Typography fontSize={12}>
-                        {getDateAndTime(comment.createdAt)}
+                        {dateUtils.getDateAndTime(comment.createdAt)}
                       </Typography>
                     </Stack>
                     <Typography>{comment.commentText}</Typography>
