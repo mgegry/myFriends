@@ -74,25 +74,27 @@ const Post = ({ postEntity }) => {
       postId: post.post.id,
     };
 
-    axios
-      .post(
-        process.env.REACT_APP_BASE_API_URL + `${user.username}/comment`,
-        body,
-        config
-      )
-      .then((response) => {
-        axios
-          .get(
-            process.env.REACT_APP_BASE_API_URL + `posts/${post.post.id}`,
-            config
-          )
-          .then((response) => {
-            setPost(response.data);
-            setCommentText("");
-          });
-      })
-      .catch((err) => {})
-      .finally(() => {});
+    if (commentText !== "" && commentText.trim().length !== 0) {
+      axios
+        .post(
+          process.env.REACT_APP_BASE_API_URL + `${user.username}/comment`,
+          body,
+          config
+        )
+        .then((response) => {
+          axios
+            .get(
+              process.env.REACT_APP_BASE_API_URL + `posts/${post.post.id}`,
+              config
+            )
+            .then((response) => {
+              setPost(response.data);
+              setCommentText("");
+            });
+        })
+        .catch((err) => {})
+        .finally(() => {});
+    }
   };
 
   return (
