@@ -63,7 +63,7 @@ public class HomeService {
             posts.addAll(postRepository.findByUser(u));
         }
 
-        Collections.sort(posts);
+        posts.sort(Collections.reverseOrder());
 
         List<PostResponse> postResponses = new ArrayList<>();
         for (Post p : posts) {

@@ -10,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -64,6 +65,11 @@ public class User {
                 joinColumns = @JoinColumn(name = "user_id"),
                 inverseJoinColumns = @JoinColumn(name = "role_id"))
         private Set<Role> roles = new HashSet<>();
+
+        @JsonIgnore
+        @OneToMany
+        @JoinColumn(name = "user_id")
+        private List<Post> posts;
 
         public User(String username, String email, String password) {
                 this.username = username;

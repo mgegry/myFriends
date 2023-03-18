@@ -8,14 +8,20 @@ import {
   Typography,
 } from "@mui/material";
 import { Stack } from "@mui/system";
+import axios from "axios";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import React, { useState } from "react";
 import storage from "../firebaseConfig";
+import authHeader from "../services/authentication/auth-header";
 import LinearProgressWithLabel from "./LinearProgressWithLabel";
 
 const AddPostDialog = ({ open, handleClose }) => {
-  const [imgUrl, setImgUrl] = useState(null);
   const [progresspercent, setProgresspercent] = useState(0);
+  const [description, setDescription] = useState("");
+
+  const handleDescription = (event) => {
+    setDescription(event.target.value);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -38,8 +44,33 @@ const AddPostDialog = ({ open, handleClose }) => {
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          setImgUrl(downloadURL);
-          // TODO:: Add post to db
+          console.log(downloadURL);
+
+          const user = JSON.parse(localStorage.getItem("user"));
+          const userId = user.id;
+
+          const config = {
+            headers: authHeader(),
+          };
+
+          const body = {
+            description: description,
+            imageUrl: downloadURL,
+            userId: userId,
+          };
+
+          console.log(body);
+
+          axios
+            .post(
+              process.env.REACT_APP_BASE_API_URL + `${user.username}/post`,
+              body,
+              config
+            )
+            .then(() => {})
+            .catch(() => {})
+            .finally(() => {});
+
           handleClose();
           setProgresspercent(0);
         });
@@ -62,7 +93,11 @@ const AddPostDialog = ({ open, handleClose }) => {
         </DialogTitle>
         <DialogActions>
           <Stack spacing={2}>
-            <TextField multiline label="Photo description">
+            <TextField
+              multiline
+              label="Photo description"
+              onChange={handleDescription}
+            >
               Description
             </TextField>
             <form onSubmit={handleSubmit} className="form">

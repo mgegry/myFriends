@@ -16,17 +16,19 @@ public class Post implements Comparable<Post>{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     private String description;
 
-    // private image ... TODO: add the image code
+    @Column(name = "image_url")
+    private String imageUrl;
 
-    @NotBlank
     @Column(name = "created_at")
     private Date createdAt;
 
+    @Column(name = "user_id")
+    private Long userId;
+
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
 
     @Override

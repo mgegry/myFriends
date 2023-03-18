@@ -32,6 +32,7 @@ const Post = ({ post }) => {
   const numberOfLikes = post.likes.length;
   const numberOfComments = post.comments.length;
   const comments = post.comments;
+  const imageUrl = post.post.imageUrl;
 
   const dateForComment = (value) => {
     value = new Date(value);
@@ -53,10 +54,7 @@ const Post = ({ post }) => {
         title={<b>{postedBy}</b>}
         subheader={postedAt}
       />
-      <CardMedia
-        component="img"
-        image="https://blog.hootsuite.com/wp-content/uploads/2021/07/free-stock-photos-03-scaled.jpeg"
-      />
+      <CardMedia component="img" image={imageUrl} />
       <CardContent>
         <Stack spacing={2}>
           <Stack direction={"row"} spacing={2}>
