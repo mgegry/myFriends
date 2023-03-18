@@ -19,13 +19,6 @@ import { Stack } from "@mui/system";
 
 const Post = ({ post }) => {
   const postedBy = post.post.user.username;
-  const date = new Date(post.post.createdAt);
-  const postedAt =
-    date.getDate().toString() +
-    "/" +
-    date.getMonth().toString() +
-    "/" +
-    date.getFullYear().toString();
 
   const description = post.post.description;
 
@@ -34,10 +27,25 @@ const Post = ({ post }) => {
   const comments = post.comments;
   const imageUrl = post.post.imageUrl;
 
-  const dateForComment = (value) => {
+  const getDateAndTime = (value) => {
     value = new Date(value);
 
+    var minutes = value.getMinutes().toString();
+    var hours = value.getHours().toString();
+
+    if (value.getMinutes().toString().length === 1) {
+      minutes = "0" + minutes;
+    }
+
+    if (value.getHours.toString().length === 1) {
+      hours = "0" + hours;
+    }
+
     const postedAt =
+      hours +
+      ":" +
+      minutes +
+      " " +
       value.getDate().toString() +
       "/" +
       value.getMonth().toString() +
@@ -52,7 +60,7 @@ const Post = ({ post }) => {
       <CardHeader
         avatar={<Avatar></Avatar>}
         title={<b>{postedBy}</b>}
-        subheader={postedAt}
+        subheader={getDateAndTime(post.post.createdAt)}
       />
       <CardMedia component="img" image={imageUrl} />
       <CardContent>
@@ -111,7 +119,7 @@ const Post = ({ post }) => {
                         <b>{comment.user.username}</b>
                       </Typography>
                       <Typography fontSize={12}>
-                        {dateForComment(comment.createdAt)}
+                        {getDateAndTime(comment.createdAt)}
                       </Typography>
                     </Stack>
                     <Typography>{comment.commentText}</Typography>
