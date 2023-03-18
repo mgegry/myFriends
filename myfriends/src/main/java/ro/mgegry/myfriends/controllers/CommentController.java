@@ -8,6 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ro.mgegry.myfriends.models.Comment;
 import ro.mgegry.myfriends.repositories.CommentRepository;
+import ro.mgegry.myfriends.services.CommentService;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -18,15 +19,14 @@ import java.util.Date;
 public class CommentController {
 
     @Autowired
-    CommentRepository commentRepository;
+    CommentService commentService;
 
     @PostMapping("/{username}/comment")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> addNewPost(@PathVariable String username,
                                         @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization,
                                         @RequestBody Comment comment) {
-        comment.setCreatedAt(new Timestamp(new Date().getTime()));
-        return new ResponseEntity<>(commentRepository.save(comment), HttpStatus.OK);
+        return commentService.addNewPost(username, authorization, comment);
     }
 
 }

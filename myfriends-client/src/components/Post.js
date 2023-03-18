@@ -16,8 +16,13 @@ import {
   Typography,
 } from "@mui/material";
 import { Stack } from "@mui/system";
+import axios from "axios";
+import { useState } from "react";
+import authHeader from "../services/authentication/auth-header";
 
 const Post = ({ post }) => {
+  const [commentText, setCommentText] = useState("");
+
   const postedBy = post.post.user.username;
 
   const description = post.post.description;
@@ -53,6 +58,30 @@ const Post = ({ post }) => {
       value.getFullYear().toString();
 
     return postedAt;
+  };
+
+  const handleAddComment = () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    const config = {
+      headers: authHeader(),
+    };
+
+    const body = {
+      commentText: commentText,
+      userId: user.id,
+      postId: post.post.id,
+    };
+
+    axios
+      .post(
+        process.env.REACT_APP_BASE_API_URL + `${user.username}/comment`,
+        body,
+        config
+      )
+      .then((response) => {})
+      .catch((err) => {})
+      .finally(() => {});
   };
 
   return (
@@ -132,9 +161,16 @@ const Post = ({ post }) => {
       </CardContent>
       <CardActions>
         <Stack sx={{ width: "100%" }} direction="row">
-          <TextField variant="standard" label="Add comment" fullWidth />
+          <TextField
+            variant="standard"
+            label="Add comment"
+            fullWidth
+            onChange={(event) => {
+              setCommentText(event.target.value);
+            }}
+          />
 
-          <IconButton>
+          <IconButton onClick={handleAddComment}>
             <AddCommentOutlined />
           </IconButton>
         </Stack>

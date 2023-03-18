@@ -42,7 +42,6 @@ public class PostService {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         post.setCreatedAt(new Timestamp(new Date().getTime()));
-        System.out.println(post);
 
         return new ResponseEntity<>(postRepository.save(post), HttpStatus.OK);
     }

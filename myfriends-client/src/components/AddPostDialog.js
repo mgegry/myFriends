@@ -59,8 +59,6 @@ const AddPostDialog = ({ open, handleClose }) => {
             userId: userId,
           };
 
-          console.log(body);
-
           axios
             .post(
               process.env.REACT_APP_BASE_API_URL + `${user.username}/post`,
