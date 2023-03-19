@@ -1,8 +1,6 @@
-import { Delete } from "@mui/icons-material";
 import {
   Avatar,
   Grid,
-  IconButton,
   ImageList,
   ImageListItem,
   Paper,
@@ -17,7 +15,6 @@ import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import authHeader from "../../services/authentication/auth-header";
-import dateUtils from "../../utils/dateUtils";
 import stringUtils from "../../utils/stringUtils";
 
 function TabPanel(props) {
@@ -55,12 +52,12 @@ const UserProfile = () => {
   const [friendsNb, setFriendsNb] = React.useState([]);
   const [requestUser, setRequestUser] = React.useState(null);
 
-  const user = JSON.parse(localStorage.getItem("user"));
   const config = {
     headers: authHeader(),
   };
 
   const { username } = useParams();
+  console.log(username);
 
   useEffect(() => {
     axios
@@ -93,8 +90,6 @@ const UserProfile = () => {
       .finally(() => {});
   }, []);
 
-  useEffect(() => {}, []);
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -110,7 +105,7 @@ const UserProfile = () => {
               <Stack spacing={3}>
                 <Stack spacing={1}>
                   <Typography fontSize={20}>
-                    <b>{requestUser.username}</b>
+                    <b>{requestUser != null ? requestUser.username : ""}</b>
                   </Typography>
 
                   <Stack direction={"row"} spacing={5}>
