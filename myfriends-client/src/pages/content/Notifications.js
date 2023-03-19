@@ -18,7 +18,7 @@ const Notifications = () => {
   const handleDelclineRequest = () => {};
 
   return (
-    <Grid continer>
+    <Grid container>
       <Container maxWidth="md">
         <Stack spacing={5}>
           <Paper sx={{ padding: "20px", minHeight: "17vh" }}>
