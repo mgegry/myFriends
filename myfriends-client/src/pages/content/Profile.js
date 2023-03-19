@@ -96,6 +96,7 @@ const Profile = () => {
   }, []);
 
   const handleDeleteFriend = (friendUsername, index) => {
+    // TODO: add : IF SOBODY ELSE DONT PRINT OR ALLOW THE BUTTON TO BE SEEN
     axios
       .delete(
         process.env.REACT_APP_BASE_API_URL +
@@ -122,46 +123,50 @@ const Profile = () => {
       <Container maxWidth="md">
         <Stack sx={{ width: "100%", alignItems: "" }} spacing={5}>
           {/* Profile info */}
-          <Stack direction={"row"} spacing={10}>
-            <Avatar sx={{ width: 150, height: 150 }}></Avatar>
-            <Stack spacing={3}>
-              <Stack spacing={1}>
-                <Typography fontSize={20}>
-                  <b>{user.username}</b>
-                </Typography>
+          <Paper sx={{ padding: "20px", minHeight: "17vh" }}>
+            <Stack direction={"row"} spacing={10}>
+              <Avatar sx={{ width: 150, height: 150 }}></Avatar>
+              <Stack spacing={3}>
+                <Stack spacing={1}>
+                  <Typography fontSize={20}>
+                    <b>{user.username}</b>
+                  </Typography>
 
-                <Stack direction={"row"} spacing={5}>
-                  <Typography>{posts.length} Posts</Typography>
-                  <Typography>{friends.length} Friends</Typography>
+                  <Stack direction={"row"} spacing={5}>
+                    <Typography>{posts.length} Posts</Typography>
+                    <Typography>{friends.length} Friends</Typography>
+                  </Stack>
+                </Stack>
+
+                <Stack spacing={1}>
+                  <Typography>
+                    <b>
+                      {requestUser !== null
+                        ? stringUtils.capitalizeFirstLetter(
+                            requestUser.firstName
+                          ) +
+                          " " +
+                          stringUtils.capitalizeFirstLetter(
+                            requestUser.lastName
+                          )
+                        : ""}
+                    </b>
+                  </Typography>
+                  <Typography>
+                    {requestUser !== null ? (
+                      requestUser.bio !== null ? (
+                        requestUser.bio
+                      ) : (
+                        <i>"No bio was set"</i>
+                      )
+                    ) : (
+                      ""
+                    )}
+                  </Typography>
                 </Stack>
               </Stack>
-
-              <Stack spacing={1}>
-                <Typography>
-                  <b>
-                    {requestUser !== null
-                      ? stringUtils.capitalizeFirstLetter(
-                          requestUser.firstName
-                        ) +
-                        " " +
-                        stringUtils.capitalizeFirstLetter(requestUser.lastName)
-                      : ""}
-                  </b>
-                </Typography>
-                <Typography>
-                  {requestUser !== null ? (
-                    requestUser.bio !== null ? (
-                      requestUser.bio
-                    ) : (
-                      <i>"No bio was set"</i>
-                    )
-                  ) : (
-                    ""
-                  )}
-                </Typography>
-              </Stack>
             </Stack>
-          </Stack>
+          </Paper>
 
           {/* Profile content */}
           <Box sx={{ width: "100%" }}>

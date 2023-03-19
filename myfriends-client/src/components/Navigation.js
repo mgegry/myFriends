@@ -57,7 +57,7 @@ const Navigation = () => {
             }}
           />
           <CustomLink
-            title="Notifications"
+            title="Requests"
             color={COLORS.textSecondary}
             hoverColor={COLORS.white}
             hoverBackgroundColor={COLORS.primary}
