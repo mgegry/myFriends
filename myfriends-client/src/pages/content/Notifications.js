@@ -8,14 +8,52 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import authHeader from "../../services/authentication/auth-header";
+import { useNavigate } from "react-router-dom";
 
 const Notifications = () => {
-  useEffect(() => {}, []);
+  const [friendRequests, setFriendRequests] = useState([]);
+  const user = JSON.parse(localStorage.getItem("user"));
 
-  const handleAcceptRequest = () => {};
+  const config = {
+    headers: authHeader(),
+  };
 
-  const handleDelclineRequest = () => {};
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    axios
+      .get(
+        process.env.REACT_APP_BASE_API_URL + `${user.username}/requests`,
+        config
+      )
+      .then((response) => {
+        setFriendRequests(response.data);
+      });
+  }, []);
+
+  const handleAcceptRequest = (username) => {
+    axios.post(
+      process.env.REACT_APP_BASE_API_URL +
+        `${user.username}/acceptRequest/${username}`,
+      {},
+      config
+    );
+  };
+
+  const handleDelclineRequest = (username) => {
+    axios.delete(
+      process.env.REACT_APP_BASE_API_URL +
+        `${user.username}/declineRequest/${username}`,
+      config
+    );
+  };
+
+  const handleUserProfile = (username) => {
+    navigate(`/${username}`);
+  };
 
   return (
     <Grid container>
@@ -26,35 +64,50 @@ const Notifications = () => {
           </Paper>
 
           <Stack>
-            <Paper elevation={2} sx={{ padding: "20px", marginBottom: 1 }}>
-              <Stack direction={"row"} justifyContent={"space-between"}>
-                <Stack
-                  direction={"row"}
-                  sx={{ alignItems: "center" }}
-                  spacing={2}
+            {friendRequests.map((friendRequest) => {
+              return (
+                <Paper
+                  key={friendRequest.id}
+                  elevation={2}
+                  sx={{ padding: "20px", marginBottom: 1 }}
                 >
-                  <Avatar></Avatar>
-                  <Typography>
-                    <b>mgegry1</b>
-                  </Typography>
-                  <Typography>wants to add you as a friend</Typography>
-                </Stack>
-                <Stack direction={"row"} alignItems="center" spacing={2}>
-                  <IconButton
-                    sx={{ "&:hover": { color: "green" } }}
-                    onClick={handleAcceptRequest}
-                  >
-                    <Check />
-                  </IconButton>
-                  <IconButton
-                    sx={{ "&:hover": { color: "red" } }}
-                    onClick={handleDelclineRequest}
-                  >
-                    <Close />
-                  </IconButton>
-                </Stack>
-              </Stack>
-            </Paper>
+                  <Stack direction={"row"} justifyContent={"space-between"}>
+                    <Stack
+                      direction={"row"}
+                      sx={{ alignItems: "center", cursor: "pointer" }}
+                      spacing={2}
+                      onClick={() => {
+                        handleUserProfile(friendRequest.username);
+                      }}
+                    >
+                      <Avatar></Avatar>
+                      <Typography>
+                        <b>{friendRequest.username}</b>
+                      </Typography>
+                      <Typography>wants to add you as a friend</Typography>
+                    </Stack>
+                    <Stack direction={"row"} alignItems="center" spacing={2}>
+                      <IconButton
+                        sx={{ "&:hover": { color: "green" } }}
+                        onClick={() => {
+                          handleAcceptRequest(friendRequest.username);
+                        }}
+                      >
+                        <Check />
+                      </IconButton>
+                      <IconButton
+                        sx={{ "&:hover": { color: "red" } }}
+                        onClick={() => {
+                          handleDelclineRequest(friendRequest.username);
+                        }}
+                      >
+                        <Close />
+                      </IconButton>
+                    </Stack>
+                  </Stack>
+                </Paper>
+              );
+            })}
           </Stack>
         </Stack>
       </Container>
