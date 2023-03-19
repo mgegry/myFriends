@@ -15,6 +15,7 @@ import { Box, Container } from "@mui/system";
 import axios from "axios";
 import PropTypes from "prop-types";
 import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import authHeader from "../../services/authentication/auth-header";
 import dateUtils from "../../utils/dateUtils";
 import stringUtils from "../../utils/stringUtils";
@@ -48,10 +49,10 @@ function a11yProps(index) {
   };
 }
 
-const Profile = () => {
+const UserProfile = () => {
   const [value, setValue] = React.useState(0);
   const [posts, setPosts] = React.useState([]);
-  const [friends, setFriends] = React.useState([]);
+  const [friendsNb, setFriendsNb] = React.useState([]);
   const [requestUser, setRequestUser] = React.useState(null);
 
   const user = JSON.parse(localStorage.getItem("user"));
@@ -59,12 +60,11 @@ const Profile = () => {
     headers: authHeader(),
   };
 
+  const { username } = useParams();
+
   useEffect(() => {
     axios
-      .get(
-        process.env.REACT_APP_BASE_API_URL + `${user.username}/posts`,
-        config
-      )
+      .get(process.env.REACT_APP_BASE_API_URL + `${username}/posts`, config)
       .then((response) => {
         setPosts(response.data);
       })
@@ -74,45 +74,26 @@ const Profile = () => {
 
   useEffect(() => {
     axios
-      .get(
-        process.env.REACT_APP_BASE_API_URL + `${user.username}/friends`,
-        config
-      )
-      .then((response) => {
-        setFriends(response.data);
-      })
-      .catch(() => {})
-      .finally(() => {});
-  }, []);
-
-  useEffect(() => {
-    axios
-      .get(process.env.REACT_APP_BASE_API_URL + `${user.username}/info`, config)
+      .get(process.env.REACT_APP_BASE_API_URL + `${username}`, config)
       .then((response) => {
         setRequestUser(response.data);
+        axios
+          .get(
+            process.env.REACT_APP_BASE_API_URL +
+              `${response.data.id}/friends/number`,
+            config
+          )
+          .then((response) => {
+            setFriendsNb(response.data.numberOfFriends);
+          })
+          .catch((err) => {})
+          .finally(() => {});
       })
       .catch((err) => {})
       .finally(() => {});
   }, []);
 
-  const handleDeleteFriend = (friendUsername, index) => {
-    // TODO: add : IF SOBODY ELSE DONT PRINT OR ALLOW THE BUTTON TO BE SEEN
-    axios
-      .delete(
-        process.env.REACT_APP_BASE_API_URL +
-          `${user.username}/friends/${friendUsername}`,
-        config
-      )
-      .then((response) => {
-        var copy = [...friends];
-        copy.splice(index, 1);
-        setFriends(copy);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {});
-  };
+  useEffect(() => {}, []);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -129,12 +110,12 @@ const Profile = () => {
               <Stack spacing={3}>
                 <Stack spacing={1}>
                   <Typography fontSize={20}>
-                    <b>{user.username}</b>
+                    <b>{requestUser.username}</b>
                   </Typography>
 
                   <Stack direction={"row"} spacing={5}>
                     <Typography>{posts.length} Posts</Typography>
-                    <Typography>{friends.length} Friends</Typography>
+                    <Typography>{friendsNb} Friends</Typography>
                   </Stack>
                 </Stack>
 
@@ -178,7 +159,6 @@ const Profile = () => {
                 centered
               >
                 <Tab label="Posts" {...a11yProps(0)} />
-                <Tab label="Friends" {...a11yProps(1)} />
               </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
@@ -195,49 +175,10 @@ const Profile = () => {
                 })}
               </ImageList>
             </TabPanel>
-            <TabPanel value={value} index={1}>
-              {friends.map((friend, index) => {
-                return (
-                  <Paper
-                    elevation={2}
-                    key={friend.id}
-                    sx={{ padding: "20px", marginBottom: 1 }}
-                  >
-                    <Stack direction={"row"} justifyContent={"space-between"}>
-                      <Stack
-                        direction={"row"}
-                        sx={{ alignItems: "center" }}
-                        spacing={2}
-                      >
-                        <Avatar></Avatar>
-                        <Typography>
-                          <b>{friend.username}</b>
-                        </Typography>
-                      </Stack>
-                      <Stack direction={"row"} alignItems="center" spacing={2}>
-                        <Stack direction={"row"} spacing={1}>
-                          <Typography>Friends since:</Typography>
-                          <Typography>
-                            {dateUtils.getDate(friend.createdAt)}
-                          </Typography>
-                        </Stack>
-                        <IconButton
-                          onClick={() => {
-                            handleDeleteFriend(friend.username, index);
-                          }}
-                        >
-                          <Delete />
-                        </IconButton>
-                      </Stack>
-                    </Stack>
-                  </Paper>
-                );
-              })}
-            </TabPanel>
           </Box>
         </Stack>
       </Container>
     </Grid>
   );
 };
-export default Profile;
+export default UserProfile;

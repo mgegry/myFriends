@@ -10,6 +10,7 @@ import Home from "./pages/content/Home";
 import Profile from "./pages/content/Profile";
 import Notifications from "./pages/content/Notifications";
 import Settings from "./pages/content/Settings";
+import UserProfile from "./pages/content/UserProfile";
 
 const router = createBrowserRouter([
   {
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
       {
         path: "/settings",
         element: <Settings />,
+      },
+      {
+        path: "/:username",
+        element: <UserProfile />,
       },
     ],
   },

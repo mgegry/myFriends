@@ -15,10 +15,16 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @GetMapping("/{username}")
+    @GetMapping("/{username}/info")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getUser(@PathVariable String username,
                                      @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization) {
         return userService.getUser(username, authorization);
+    }
+
+    @GetMapping("/{username}")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> getProfile(@PathVariable String username) {
+        return userService.getProfile(username);
     }
 }

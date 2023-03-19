@@ -31,4 +31,11 @@ public class FriendController {
     ){
         return friendService.deleteFriend(username, friendUsername, authorization);
     }
+
+    @GetMapping("/{userId}/friends/number")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> getNumberOfFriendsForUser(@PathVariable Long userId) {
+        return friendService.getNumberOfFriendsForUser(userId);
+    }
+
 }

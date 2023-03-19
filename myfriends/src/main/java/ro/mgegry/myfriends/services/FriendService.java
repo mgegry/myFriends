@@ -11,6 +11,7 @@ import ro.mgegry.myfriends.repositories.UserRepository;
 import ro.mgegry.myfriends.security.jwt.JwtUtils;
 import ro.mgegry.myfriends.services.payload.request.DeleteFriendRequest;
 import ro.mgegry.myfriends.services.payload.response.FriendResponse;
+import ro.mgegry.myfriends.services.payload.response.NumberOfFriendsResponse;
 
 import java.util.HashSet;
 import java.util.List;
@@ -105,6 +106,14 @@ public class FriendService {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+
+    public ResponseEntity<?> getNumberOfFriendsForUser(Long id) {
+
+        NumberOfFriendsResponse response = new NumberOfFriendsResponse(friendRepository.findAllFriendsForUserId(id));
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+
+    }
 
 
 }

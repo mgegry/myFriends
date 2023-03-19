@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import ro.mgegry.myfriends.models.User;
 import ro.mgegry.myfriends.repositories.UserRepository;
 import ro.mgegry.myfriends.security.jwt.JwtUtils;
+import ro.mgegry.myfriends.services.payload.response.ProfileResponse;
 
 import java.util.Optional;
 
@@ -36,6 +37,29 @@ public class UserService {
         }
 
         return new ResponseEntity<>(user.get(), HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> getProfile(String username) {
+
+        Optional<User> userOptional = userRepository.findByUsername(username);
+
+        if (!userOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        User user = userOptional.get();
+
+        ProfileResponse profileResponse = new ProfileResponse(
+                user.getId(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getUsername(),
+                user.getBio()
+        );
+
+
+
+        return new ResponseEntity<>(profileResponse, HttpStatus.OK);
     }
 
 }
