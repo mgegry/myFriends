@@ -6,13 +6,13 @@ import org.springframework.stereotype.Repository;
 import ro.mgegry.myfriends.models.Friend;
 import ro.mgegry.myfriends.models.User;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface FriendRepository extends JpaRepository<Friend, Long> {
-
-    Boolean existsByFirstUserAndSecondUser(User first, User second);
 
     Friend findByFirstUserAndSecondUser(User first, User second);
 

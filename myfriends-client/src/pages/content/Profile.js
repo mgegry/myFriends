@@ -95,6 +95,24 @@ const Profile = () => {
       .finally(() => {});
   }, []);
 
+  const handleDeleteFriend = (friendUsername, index) => {
+    axios
+      .delete(
+        process.env.REACT_APP_BASE_API_URL +
+          `${user.username}/friends/${friendUsername}`,
+        config
+      )
+      .then((response) => {
+        var copy = [...friends];
+        copy.splice(index, 1);
+        setFriends(copy);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {});
+  };
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -173,7 +191,7 @@ const Profile = () => {
               </ImageList>
             </TabPanel>
             <TabPanel value={value} index={1}>
-              {friends.map((friend) => {
+              {friends.map((friend, index) => {
                 return (
                   <Paper
                     elevation={2}
@@ -198,7 +216,11 @@ const Profile = () => {
                             {dateUtils.getDate(friend.createdAt)}
                           </Typography>
                         </Stack>
-                        <IconButton>
+                        <IconButton
+                          onClick={() => {
+                            handleDeleteFriend(friend.username, index);
+                          }}
+                        >
                           <Delete />
                         </IconButton>
                       </Stack>

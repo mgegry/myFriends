@@ -81,21 +81,27 @@ public class FriendService {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    public ResponseEntity<?> deleteFriend(String username, String authorization, DeleteFriendRequest user) {
+    public ResponseEntity<?> deleteFriend(String username, String friend, String authorization) {
         if (!jwtUtils.checkAuthorizationForUsername(username, authorization)) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
-        Optional<User> user1 = userRepository.findById(Math.min(user.getUserId(), user.getToDeleteUserId()));
-        Optional<User> user2 = userRepository.findById(Math.max(user.getUserId(), user.getToDeleteUserId()));
+
+        Optional<User> user1 = userRepository.findByUsername(username);
+        Optional<User> user2 = userRepository.findByUsername(friend);
 
         if (user1.isPresent() && user2.isPresent()) {
-            Friend friend = friendRepository.findByFirstUserAndSecondUser(user1.get(), user2.get());
-            friendRepository.delete(friend);
+            Friend friendship;
+
+            if (user1.get().getId() < user2.get().getId()) {
+                friendship = friendRepository.findByFirstUserAndSecondUser(user1.get(), user2.get());
+            } else {
+                friendship = friendRepository.findByFirstUserAndSecondUser(user2.get(), user1.get());
+            }
+            friendRepository.delete(friendship);
 
             return new ResponseEntity<>(HttpStatus.OK);
         }
-
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 

@@ -24,12 +24,11 @@ public class FriendController {
         return friendService.getAllFriends(username, authorization);
     }
 
-    @DeleteMapping("{username}/friends")
+    @DeleteMapping("{username}/friends/{friendUsername}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> deleteFriend(@PathVariable String username,
-                                          @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization,
-                                          @RequestBody DeleteFriendRequest user
+    public ResponseEntity<?> deleteFriend(@PathVariable String username, @PathVariable String friendUsername,
+                                          @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization
     ){
-        return friendService.deleteFriend(username, authorization, user);
+        return friendService.deleteFriend(username, friendUsername, authorization);
     }
 }
