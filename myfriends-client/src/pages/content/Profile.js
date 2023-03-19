@@ -15,6 +15,7 @@ import { Box, Container } from "@mui/system";
 import axios from "axios";
 import PropTypes from "prop-types";
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import authHeader from "../../services/authentication/auth-header";
 import dateUtils from "../../utils/dateUtils";
 import stringUtils from "../../utils/stringUtils";
@@ -118,6 +119,12 @@ const Profile = () => {
     setValue(newValue);
   };
 
+  const navigate = useNavigate();
+
+  const handleUserProfile = (username) => {
+    navigate(`/${username}`);
+  };
+
   return (
     <Grid container>
       <Container maxWidth="md">
@@ -206,10 +213,14 @@ const Profile = () => {
                     <Stack direction={"row"} justifyContent={"space-between"}>
                       <Stack
                         direction={"row"}
-                        sx={{ alignItems: "center" }}
+                        sx={{ alignItems: "center", cursor: "pointer" }}
                         spacing={2}
+                        onClick={() => {
+                          handleUserProfile(friend.username);
+                        }}
                       >
                         <Avatar></Avatar>
+
                         <Typography>
                           <b>{friend.username}</b>
                         </Typography>
