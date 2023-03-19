@@ -93,14 +93,26 @@ public class FriendRequestService {
         return new ResponseEntity<>(friendRepository.save(friendShip), HttpStatus.OK);
     }
 
+    @Transactional
     public ResponseEntity<?> declineFriendRequest(String username, String friend, String authorization) {
         if (!jwtUtils.checkAuthorizationForUsername(username, authorization)) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
 
+        Optional<User> fromUserOptional = userRepository.findByUsername(friend);
+        Optional<User> toUserOptional = userRepository.findByUsername(username);
 
-        return null;
+        if (!fromUserOptional.isPresent() || !toUserOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        User fromUser = fromUserOptional.get();
+        User toUser = toUserOptional.get();
+
+        friendRequestRepository.deleteFriendRequest(fromUser.getId(), toUser.getId());
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

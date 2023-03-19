@@ -1,7 +1,6 @@
 package ro.mgegry.myfriends.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,13 +23,15 @@ public class FriendRequestController {
     }
 
     @PostMapping("/{username}/acceptRequest/{friend}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> acceptFriendRequest(@PathVariable String username,
                                                  @PathVariable String friend,
                                                  @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization) {
         return friendRequestService.acceptFriendRequest(username, friend, authorization);
     }
 
-    @DeleteMapping("/{username}/acceptRequest/{friend}")
+    @DeleteMapping("/{username}/declineRequest/{friend}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> declineFriendRequest(@PathVariable String username,
                                                  @PathVariable String friend,
                                                  @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization) {
