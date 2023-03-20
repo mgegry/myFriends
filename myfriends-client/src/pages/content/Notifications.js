@@ -34,21 +34,33 @@ const Notifications = () => {
       });
   }, []);
 
-  const handleAcceptRequest = (username) => {
-    axios.post(
-      process.env.REACT_APP_BASE_API_URL +
-        `${user.username}/acceptRequest/${username}`,
-      {},
-      config
-    );
+  const handleAcceptRequest = (username, index) => {
+    axios
+      .post(
+        process.env.REACT_APP_BASE_API_URL +
+          `${user.username}/acceptRequest/${username}`,
+        {},
+        config
+      )
+      .then((response) => {
+        var copy = [...friendRequests];
+        copy.splice(index, 1);
+        setFriendRequests(copy);
+      });
   };
 
-  const handleDelclineRequest = (username) => {
-    axios.delete(
-      process.env.REACT_APP_BASE_API_URL +
-        `${user.username}/declineRequest/${username}`,
-      config
-    );
+  const handleDelclineRequest = (username, index) => {
+    axios
+      .delete(
+        process.env.REACT_APP_BASE_API_URL +
+          `${user.username}/declineRequest/${username}`,
+        config
+      )
+      .then((response) => {
+        var copy = [...friendRequests];
+        copy.splice(index, 1);
+        setFriendRequests(copy);
+      });
   };
 
   const handleUserProfile = (username) => {
@@ -64,7 +76,7 @@ const Notifications = () => {
           </Paper>
 
           <Stack>
-            {friendRequests.map((friendRequest) => {
+            {friendRequests.map((friendRequest, index) => {
               return (
                 <Paper
                   key={friendRequest.id}
@@ -90,7 +102,7 @@ const Notifications = () => {
                       <IconButton
                         sx={{ "&:hover": { color: "green" } }}
                         onClick={() => {
-                          handleAcceptRequest(friendRequest.username);
+                          handleAcceptRequest(friendRequest.username, index);
                         }}
                       >
                         <Check />
@@ -98,7 +110,7 @@ const Notifications = () => {
                       <IconButton
                         sx={{ "&:hover": { color: "red" } }}
                         onClick={() => {
-                          handleDelclineRequest(friendRequest.username);
+                          handleDelclineRequest(friendRequest.username, index);
                         }}
                       >
                         <Close />

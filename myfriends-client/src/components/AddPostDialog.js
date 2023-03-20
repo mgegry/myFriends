@@ -44,8 +44,6 @@ const AddPostDialog = ({ open, handleClose }) => {
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          console.log(downloadURL);
-
           const user = JSON.parse(localStorage.getItem("user"));
           const userId = user.id;
 
