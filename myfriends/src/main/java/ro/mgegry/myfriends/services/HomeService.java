@@ -81,4 +81,9 @@ public class HomeService {
 
         return new ResponseEntity<>(postResponses, HttpStatus.OK);
     }
+
+    public ResponseEntity<?> getSearch(String username) {
+
+        return new ResponseEntity<>(userRepository.getSearch(username), HttpStatus.OK);
+    }
 }

@@ -6,10 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import ro.mgegry.myfriends.models.Friend;
 import ro.mgegry.myfriends.models.Post;
 import ro.mgegry.myfriends.models.User;
@@ -32,5 +29,11 @@ public class HomeController {
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getFriendsPosts(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorization) {
         return homeService.getFriendsPosts(authorization);
+    }
+
+    @GetMapping("/search/{username}")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> getSearch(@PathVariable String username) {
+        return homeService.getSearch(username);
     }
 }
