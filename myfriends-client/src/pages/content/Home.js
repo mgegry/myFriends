@@ -37,10 +37,10 @@ const Home = () => {
           }
 
           setSearchResult(response.data);
-          console.log(response.data);
         });
     } else {
       setDisplayContent("");
+      setDisplaySearch("none");
       setSearchResult([]);
     }
   };
@@ -86,9 +86,9 @@ const Home = () => {
               borderRadius: "10px",
             },
             padding: "20px",
+            display: `${displaySearch}`,
           }}
           elevation={3}
-          display={displaySearch}
         >
           <List sx={{ padding: "20px" }}>
             {searchResult.map((user) => {
