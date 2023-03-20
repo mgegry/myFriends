@@ -1,4 +1,4 @@
-import { Avatar, Divider, Grid, List, Paper, Typography } from "@mui/material";
+import { Avatar, Grid, List, Paper, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import axios from "axios";
 import { useEffect, useState } from "react";

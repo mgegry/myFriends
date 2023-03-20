@@ -3,11 +3,9 @@ import {
   FormControl,
   IconButton,
   InputAdornment,
-  Modal,
   TextField,
 } from "@mui/material";
-import axios from "axios";
-import React, { useState } from "react";
+import React from "react";
 import { COLORS } from "../values/colors";
 
 const SearchBar = ({ barWidth, handleOnChange, iconEnd, handleCancel }) => {
