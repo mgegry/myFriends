@@ -12,6 +12,7 @@ const Home = () => {
   const [searchResult, setSearchResult] = useState([]);
   const [displayContent, setDisplayContent] = useState("");
   const [displaySearch, setDisplaySearch] = useState("none");
+  const [iconEnd, setIconEnd] = useState("search");
 
   const config = {
     headers: authHeader(),
@@ -21,6 +22,13 @@ const Home = () => {
 
   const handleUserProfile = (user) => {
     navigate(`/${user}`);
+  };
+
+  const handleCancel = () => {
+    setSearchResult([]);
+    setDisplayContent("");
+    setDisplaySearch("none");
+    setIconEnd("search");
   };
 
   const handleOnChange = (event) => {
@@ -34,6 +42,7 @@ const Home = () => {
           if (response.data.length > 0) {
             setDisplayContent("none");
             setDisplaySearch("");
+            setIconEnd("cancel");
           }
 
           setSearchResult(response.data);
@@ -41,6 +50,7 @@ const Home = () => {
     } else {
       setDisplayContent("");
       setDisplaySearch("none");
+      setIconEnd("search");
       setSearchResult([]);
     }
   };
@@ -62,7 +72,12 @@ const Home = () => {
   return (
     <Grid container>
       <Stack sx={{ width: "100%", alignItems: "center" }} spacing={5}>
-        <SearchBar barWidth="50%" handleOnChange={handleOnChange} />
+        <SearchBar
+          barWidth="50%"
+          handleOnChange={handleOnChange}
+          iconEnd={iconEnd}
+          handleCancel={handleCancel}
+        />
 
         <Stack sx={{ width: "35%" }} spacing={3} display={displayContent}>
           {posts.map((post) => {

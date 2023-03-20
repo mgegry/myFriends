@@ -1,4 +1,4 @@
-import { Search } from "@mui/icons-material";
+import { Cancel, Search } from "@mui/icons-material";
 import {
   FormControl,
   IconButton,
@@ -10,7 +10,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { COLORS } from "../values/colors";
 
-const SearchBar = ({ barWidth, handleOnChange }) => {
+const SearchBar = ({ barWidth, handleOnChange, iconEnd, handleCancel }) => {
   return (
     <FormControl variant="filled" sx={{ width: "100%", alignItems: "center" }}>
       <TextField
@@ -24,8 +24,13 @@ const SearchBar = ({ barWidth, handleOnChange }) => {
           ),
           endAdornment: (
             <InputAdornment position="end">
-              <IconButton aria-label="toggle password visibility" edge="end">
-                <Search />
+              <IconButton
+                aria-label="toggle password visibility"
+                edge="end"
+                onClick={handleCancel ? handleCancel : null}
+                disabled={iconEnd === "search"}
+              >
+                {iconEnd === "cancel" ? <Cancel /> : <Search />}
               </IconButton>
             </InputAdornment>
           ),
