@@ -2,6 +2,7 @@ import {
   Button,
   Dialog,
   DialogActions,
+  DialogContent,
   DialogTitle,
   Input,
   TextField,
@@ -18,9 +19,21 @@ import LinearProgressWithLabel from "./LinearProgressWithLabel";
 const AddPostDialog = ({ open, handleClose }) => {
   const [progresspercent, setProgresspercent] = useState(0);
   const [description, setDescription] = useState("");
+  const [image, setImage] = useState(null);
 
   const handleDescription = (event) => {
     setDescription(event.target.value);
+  };
+
+  const onImageChange = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      setImage(URL.createObjectURL(event.target.files[0]));
+    }
+  };
+
+  const close = () => {
+    setImage(null);
+    handleClose();
   };
 
   const handleSubmit = (e) => {
@@ -67,7 +80,7 @@ const AddPostDialog = ({ open, handleClose }) => {
             .catch(() => {})
             .finally(() => {});
 
-          handleClose();
+          close();
           setProgresspercent(0);
         });
       }
@@ -87,7 +100,16 @@ const AddPostDialog = ({ open, handleClose }) => {
             <b>Post a new picture of yourself!</b>
           </Typography>
         </DialogTitle>
-        <DialogActions>
+        <DialogContent sx={{ display: "flex", justifyContent: "center" }}>
+          {image ? (
+            <img
+              src={image}
+              alt="uploadedImage"
+              style={{ maxHeight: "50vh", maxWidth: "100%" }}
+            />
+          ) : null}
+        </DialogContent>
+        <DialogActions sx={{ display: "flex", justifyContent: "center" }}>
           <Stack spacing={2}>
             <TextField
               multiline
@@ -97,7 +119,7 @@ const AddPostDialog = ({ open, handleClose }) => {
               Description
             </TextField>
             <form onSubmit={handleSubmit} className="form">
-              <Input disableUnderline type="file" />
+              <Input disableUnderline type="file" onChange={onImageChange} />
               <Input
                 disableUnderline
                 type="submit"
@@ -108,7 +130,13 @@ const AddPostDialog = ({ open, handleClose }) => {
 
             <LinearProgressWithLabel value={progresspercent} />
 
-            <Button variant="outlined" color="error" onClick={handleClose}>
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={() => {
+                close();
+              }}
+            >
               Cancel
             </Button>
           </Stack>

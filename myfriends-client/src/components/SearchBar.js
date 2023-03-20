@@ -8,6 +8,8 @@ import {
 import { COLORS } from "../values/colors";
 
 const SearchBar = () => {
+  const handleSearchClick = () => {};
+
   return (
     <FormControl variant="filled" sx={{ width: "100%", alignItems: "center" }}>
       <TextField
@@ -24,7 +26,7 @@ const SearchBar = () => {
               <IconButton
                 aria-label="toggle password visibility"
                 edge="end"
-                onClick={() => {}}
+                onClick={handleSearchClick}
               >
                 <Search />
               </IconButton>
