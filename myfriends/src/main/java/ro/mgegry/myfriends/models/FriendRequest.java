@@ -1,6 +1,8 @@
 package ro.mgegry.myfriends.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -8,6 +10,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "friend_requests",uniqueConstraints = {
         @UniqueConstraint(name = "uniqueFriendRequest", columnNames = {"from_user_id", "to_user_id"})})
+@NoArgsConstructor
+@AllArgsConstructor
 public class FriendRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,4 +29,9 @@ public class FriendRequest {
 
     @Column(name = "to_user_id")
     private Long toUserId;
+
+    public FriendRequest(Long fromUser, Long toUser) {
+        this.fromUserId = fromUser;
+        this.toUserId = toUser;
+    }
 }

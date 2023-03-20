@@ -12,6 +12,7 @@ import ro.mgegry.myfriends.repositories.FriendRepository;
 import ro.mgegry.myfriends.repositories.FriendRequestRepository;
 import ro.mgegry.myfriends.repositories.UserRepository;
 import ro.mgegry.myfriends.security.jwt.JwtUtils;
+import ro.mgegry.myfriends.services.payload.request.SendFriendRequestRequest;
 
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -34,6 +35,17 @@ public class FriendRequestService {
 
     @Autowired
     FriendRepository friendRepository;
+
+    public ResponseEntity<?> sendFriendRequest(String username, String authorization, SendFriendRequestRequest requestBody) {
+
+        if (!jwtUtils.checkAuthorizationForUsername(username, authorization)) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        FriendRequest fr = new FriendRequest(requestBody.getFromUserId(), requestBody.getToUserId());
+
+        return new ResponseEntity<>(friendRequestRepository.save(fr), HttpStatus.OK);
+    }
 
     public ResponseEntity<?> getAllFriendRequestsForUser(String username, String authorization) {
 

@@ -1,7 +1,8 @@
-import { Notes } from "@mui/icons-material";
+import { Notes, PersonAdd } from "@mui/icons-material";
 import {
   Avatar,
   Grid,
+  IconButton,
   ImageList,
   ImageListItem,
   ImageListItemBar,
@@ -56,6 +57,8 @@ const UserProfile = () => {
   const [requestUser, setRequestUser] = React.useState(null);
   const [modalPost, setModalPost] = React.useState(null);
 
+  const user = JSON.parse(localStorage.getItem("user"));
+
   const config = {
     headers: authHeader(),
   };
@@ -92,6 +95,19 @@ const UserProfile = () => {
       .catch((err) => {})
       .finally(() => {});
   }, []);
+
+  const handleSendFriendRequest = () => {
+    const body = {
+      fromUserId: user.id,
+      toUserId: requestUser.id,
+    };
+
+    axios.post(
+      process.env.REACT_APP_BASE_API_URL + `${user.username}/sendRequest`,
+      body,
+      config
+    );
+  };
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -160,6 +176,21 @@ const UserProfile = () => {
                   </Typography>
                 </Stack>
               </Stack>
+              <Box
+                sx={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Box>
+                  <IconButton onClick={handleSendFriendRequest}>
+                    <PersonAdd />
+                  </IconButton>
+                </Box>
+              </Box>
             </Stack>
           </Paper>
 

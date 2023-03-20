@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ro.mgegry.myfriends.services.FriendRequestService;
+import ro.mgegry.myfriends.services.payload.request.SendFriendRequestRequest;
 
 @RestController
 @RequestMapping("/api")
@@ -20,6 +21,14 @@ public class FriendRequestController {
     public ResponseEntity<?> getAllFriendRequestForUser(@PathVariable String username,
                                                         @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization) {
         return friendRequestService.getAllFriendRequestsForUser(username, authorization);
+    }
+
+    @PostMapping("/{username}/sendRequest")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> sendFriendRequest(@PathVariable String username,
+                                               @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization,
+                                               @RequestBody SendFriendRequestRequest requestBody) {
+        return friendRequestService.sendFriendRequest(username, authorization, requestBody);
     }
 
     @PostMapping("/{username}/acceptRequest/{friend}")
