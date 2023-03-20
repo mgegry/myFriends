@@ -10,6 +10,7 @@ import ro.mgegry.myfriends.repositories.FriendRepository;
 import ro.mgegry.myfriends.repositories.UserRepository;
 import ro.mgegry.myfriends.security.jwt.JwtUtils;
 import ro.mgegry.myfriends.services.payload.request.DeleteFriendRequest;
+import ro.mgegry.myfriends.services.payload.request.SendFriendRequestRequest;
 import ro.mgegry.myfriends.services.payload.response.FriendResponse;
 import ro.mgegry.myfriends.services.payload.response.NumberOfFriendsResponse;
 
@@ -113,6 +114,18 @@ public class FriendService {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
 
+    }
+
+    public ResponseEntity<?> checkIfAlreadyFriend(SendFriendRequestRequest requestBody) {
+
+        List<Friend> list = friendRepository.checkIfFriendExists(requestBody.getFromUserId(), requestBody.getToUserId());
+
+        if (list.size() == 0) {
+            return new ResponseEntity<>(false, HttpStatus.OK);
+        }
+
+
+        return new ResponseEntity<>(true, HttpStatus.OK);
     }
 
 

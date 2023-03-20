@@ -127,4 +127,14 @@ public class FriendRequestService {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    public ResponseEntity<?> checkIfFriendRequestExists(SendFriendRequestRequest requestBody) {
+        List<FriendRequest> list = friendRequestRepository.checkIfFriendRequestExists(requestBody.getFromUserId(), requestBody.getToUserId());
+
+        if (list.size() == 0) {
+            return new ResponseEntity<>(false, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(true, HttpStatus.OK);
+    }
+
 }

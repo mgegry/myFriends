@@ -2,6 +2,7 @@ package ro.mgegry.myfriends.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -45,5 +46,11 @@ public class FriendRequestController {
                                                  @PathVariable String friend,
                                                  @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization) {
         return friendRequestService.declineFriendRequest(username, friend, authorization);
+    }
+
+    @PostMapping("/checkIfFriendRequest")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> checkIfFriendRequestExists(@RequestBody SendFriendRequestRequest requestBody) {
+        return new ResponseEntity<>(friendRequestService.checkIfFriendRequestExists(requestBody), HttpStatus.OK);
     }
 }
