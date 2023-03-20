@@ -56,6 +56,7 @@ const UserProfile = () => {
   const [friendsNb, setFriendsNb] = React.useState([]);
   const [requestUser, setRequestUser] = React.useState(null);
   const [modalPost, setModalPost] = React.useState(null);
+  const [isFriend, setIsFriend] = React.useState(null);
 
   const user = JSON.parse(localStorage.getItem("user"));
 
@@ -80,6 +81,22 @@ const UserProfile = () => {
       .get(process.env.REACT_APP_BASE_API_URL + `${username}`, config)
       .then((response) => {
         setRequestUser(response.data);
+
+        const body = {
+          fromUserId: user.id,
+          toUserId: response.data.id,
+        };
+
+        axios
+          .post(
+            process.env.REACT_APP_BASE_API_URL + "checkIfInteracted",
+            body,
+            config
+          )
+          .then((response) => {
+            setIsFriend(response.data.body);
+          });
+
         axios
           .get(
             process.env.REACT_APP_BASE_API_URL +
@@ -107,6 +124,8 @@ const UserProfile = () => {
       body,
       config
     );
+
+    setIsFriend(true);
   };
 
   const handleChange = (event, newValue) => {
@@ -178,18 +197,22 @@ const UserProfile = () => {
               </Stack>
               <Box
                 sx={{
-                  width: "100%",
+                  width: "30%",
                   display: "flex",
                   justifyContent: "flex-end",
                   alignContent: "center",
                   alignItems: "center",
                 }}
               >
-                <Box>
-                  <IconButton onClick={handleSendFriendRequest}>
-                    <PersonAdd />
-                  </IconButton>
-                </Box>
+                {isFriend != null ? (
+                  isFriend ? null : (
+                    <Box>
+                      <IconButton onClick={handleSendFriendRequest}>
+                        <PersonAdd />
+                      </IconButton>
+                    </Box>
+                  )
+                ) : null}
               </Box>
             </Stack>
           </Paper>

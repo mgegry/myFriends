@@ -46,4 +46,10 @@ public class FriendController {
         return new ResponseEntity<>(friendService.checkIfAlreadyFriend(requestBody), HttpStatus.OK);
     }
 
+    @PostMapping("/checkIfInteracted")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> checkIfInteracted(@RequestBody SendFriendRequestRequest requestBody) {
+        return new ResponseEntity<>(friendService.checkIfInteracted(requestBody), HttpStatus.OK);
+    }
+
 }

@@ -5,8 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ro.mgegry.myfriends.models.Friend;
+import ro.mgegry.myfriends.models.FriendRequest;
 import ro.mgegry.myfriends.models.User;
 import ro.mgegry.myfriends.repositories.FriendRepository;
+import ro.mgegry.myfriends.repositories.FriendRequestRepository;
 import ro.mgegry.myfriends.repositories.UserRepository;
 import ro.mgegry.myfriends.security.jwt.JwtUtils;
 import ro.mgegry.myfriends.services.payload.request.DeleteFriendRequest;
@@ -27,6 +29,9 @@ public class FriendService {
 
     @Autowired
     FriendRepository friendRepository;
+
+    @Autowired
+    FriendRequestRepository friendRequestRepository;
 
     @Autowired
     JwtUtils jwtUtils;
@@ -126,6 +131,25 @@ public class FriendService {
 
 
         return new ResponseEntity<>(true, HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> checkIfInteracted(SendFriendRequestRequest requestBody) {
+
+        boolean interacted = false;
+
+        List<Friend> list = friendRepository.checkIfFriendExists(requestBody.getFromUserId(), requestBody.getToUserId());
+
+        if (list.size() != 0) {
+            interacted = true;
+        }
+
+        List<FriendRequest> list2 = friendRequestRepository.checkIfFriendRequestExists(requestBody.getFromUserId(), requestBody.getToUserId());
+
+        if (list2.size() != 0) {
+            interacted = true;
+        }
+        
+        return new ResponseEntity<>(interacted, HttpStatus.OK);
     }
 
 
