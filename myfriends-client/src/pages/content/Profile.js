@@ -1,10 +1,11 @@
-import { Delete } from "@mui/icons-material";
+import { ArtTrack, Delete, Notes } from "@mui/icons-material";
 import {
   Avatar,
   Grid,
   IconButton,
   ImageList,
   ImageListItem,
+  ImageListItemBar,
   Paper,
   Stack,
   Tab,
@@ -16,6 +17,7 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import PostModal from "../../components/PostModal";
 import authHeader from "../../services/authentication/auth-header";
 import dateUtils from "../../utils/dateUtils";
 import stringUtils from "../../utils/stringUtils";
@@ -54,11 +56,28 @@ const Profile = () => {
   const [posts, setPosts] = React.useState([]);
   const [friends, setFriends] = React.useState([]);
   const [requestUser, setRequestUser] = React.useState(null);
+  const [modalPost, setModalPost] = React.useState(null);
 
   const user = JSON.parse(localStorage.getItem("user"));
   const config = {
     headers: authHeader(),
   };
+
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = (post) => {
+    axios
+      .get(process.env.REACT_APP_BASE_API_URL + `posts/${post.id}`, config)
+      .then((response) => {
+        setModalPost(response.data);
+        setOpen(true);
+      });
+  };
+
+  const showModal = () => {
+    return <PostModal open={open} handleClose={handleClose} post={modalPost} />;
+  };
+
+  const handleClose = () => setOpen(false);
 
   useEffect(() => {
     axios
@@ -97,7 +116,6 @@ const Profile = () => {
   }, []);
 
   const handleDeleteFriend = (friendUsername, index) => {
-    // TODO: add : IF SOBODY ELSE DONT PRINT OR ALLOW THE BUTTON TO BE SEEN
     axios
       .delete(
         process.env.REACT_APP_BASE_API_URL +
@@ -109,9 +127,7 @@ const Profile = () => {
         copy.splice(index, 1);
         setFriends(copy);
       })
-      .catch((err) => {
-        console.log(err);
-      })
+      .catch((err) => {})
       .finally(() => {});
   };
 
@@ -194,9 +210,24 @@ const Profile = () => {
                   return (
                     <ImageListItem
                       key={post.id}
-                      sx={{ border: "1px solid gray" }}
+                      sx={{
+                        border: "1px solid gray",
+                        backgroundColor: "white",
+                      }}
+                      onClick={() => {
+                        handleOpen(post);
+                      }}
                     >
                       <img src={post.imageUrl} alt={"imageTitle"} />
+                      <ImageListItemBar
+                        title={
+                          <Stack direction={"row"} spacing={1}>
+                            <Notes />
+                            <Typography>{post.description}</Typography>
+                          </Stack>
+                        }
+                        position="below"
+                      />
                     </ImageListItem>
                   );
                 })}
@@ -248,6 +279,7 @@ const Profile = () => {
           </Box>
         </Stack>
       </Container>
+      {showModal()}
     </Grid>
   );
 };
