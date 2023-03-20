@@ -46,7 +46,10 @@ public class PostService {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<>(postRepository.findByUser(user.get()), HttpStatus.OK);
+        List<Post> posts = postRepository.findByUser(user.get());
+        posts.sort(Collections.reverseOrder());
+
+        return new ResponseEntity<>(posts, HttpStatus.OK);
     }
 
     public ResponseEntity<?> addPostForUser(Post post, String username, String authorization) {
