@@ -1,4 +1,4 @@
-import { ArtTrack, Delete, Notes } from "@mui/icons-material";
+import { Delete, Notes } from "@mui/icons-material";
 import {
   Avatar,
   Grid,

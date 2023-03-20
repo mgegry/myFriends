@@ -1,4 +1,4 @@
-import { Box, Modal, Paper } from "@mui/material";
+import { Modal, Paper } from "@mui/material";
 import { useEffect, useRef } from "react";
 import Post from "./Post";
 
