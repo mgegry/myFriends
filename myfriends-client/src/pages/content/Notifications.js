@@ -92,7 +92,7 @@ const Notifications = () => {
                         handleUserProfile(friendRequest.username);
                       }}
                     >
-                      <Avatar></Avatar>
+                      <Avatar src={friendRequest.profilePicture}></Avatar>
                       <Typography>
                         <b>{friendRequest.username}</b>
                       </Typography>

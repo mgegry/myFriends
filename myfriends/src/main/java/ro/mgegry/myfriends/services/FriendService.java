@@ -58,6 +58,7 @@ public class FriendService {
                         gotUser.getLastName(),
                         gotUser.getUsername(),
                         gotUser.getEmail(),
+                        gotUser.getProfilePicture(),
                         friend.getCreatedAt()
                 );
 
@@ -75,6 +76,7 @@ public class FriendService {
                         gotUser.getLastName(),
                         gotUser.getUsername(),
                         gotUser.getEmail(),
+                        gotUser.getProfilePicture(),
                         friend.getCreatedAt()
                 );
 

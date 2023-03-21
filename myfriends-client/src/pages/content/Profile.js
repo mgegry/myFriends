@@ -266,7 +266,7 @@ const Profile = () => {
                           handleUserProfile(friend.username);
                         }}
                       >
-                        <Avatar></Avatar>
+                        <Avatar src={friend.profilePicture}></Avatar>
 
                         <Typography>
                           <b>{friend.username}</b>

@@ -26,6 +26,7 @@ const Post = ({ postEntity }) => {
   const [commentText, setCommentText] = useState("");
 
   const postedBy = post.post.user.username;
+  const profilePicturePostBy = post.post.user.profilePicture;
 
   const description = post.post.description;
 
@@ -73,7 +74,7 @@ const Post = ({ postEntity }) => {
   return (
     <Card>
       <CardHeader
-        avatar={<Avatar></Avatar>}
+        avatar={<Avatar src={profilePicturePostBy}></Avatar>}
         title={<b>{postedBy}</b>}
         subheader={dateUtils.getDateAndTime(post.post.createdAt)}
       />
@@ -95,7 +96,7 @@ const Post = ({ postEntity }) => {
           <Stack direction={"row"} spacing={1} sx={{ alignItems: "center" }}>
             <Avatar
               alt="Remy Sharp"
-              src="https://blog.hootsuite.com/wp-content/uploads/2021/07/free-stock-photos-03-scaled.jpeg"
+              src={profilePicturePostBy}
               sx={{ width: 20, height: 20 }}
             />
             <Typography fontSize={14}>
@@ -128,7 +129,11 @@ const Post = ({ postEntity }) => {
                       <Avatar
                         alt="Remy Sharp"
                         sx={{ width: 20, height: 20 }}
-                        src="https://www.befunky.com/images/prismic/5ddfea42-7377-4bef-9ac4-f3bd407d52ab_landing-photo-to-cartoon-img5.jpeg?auto=avif,webp&format=jpg&width=863"
+                        src={
+                          comment.user.profilePicture
+                            ? comment.user.profilePicture
+                            : ""
+                        }
                       />
                       <Typography fontSize={14}>
                         <b>{comment.user.username}</b>

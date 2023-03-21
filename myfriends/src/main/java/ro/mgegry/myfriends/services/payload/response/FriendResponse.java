@@ -19,5 +19,7 @@ public class FriendResponse {
 
     private String email;
 
+    private String profilePicture;
+
     private Date createdAt;
 }
