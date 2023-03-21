@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ro.mgegry.myfriends.models.Like;
 import ro.mgegry.myfriends.services.LikeService;
+import ro.mgegry.myfriends.services.payload.request.CheckIfPostLikedByUserRequest;
 
 @Controller
 @RequestMapping("/api")
@@ -19,10 +20,16 @@ public class LikeController {
     @Autowired
     LikeService likeService;
 
-    @PostMapping("/addLike")
+    @PostMapping("/like")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> addLike(@RequestBody Like like) {
         return likeService.addLike(like);
+    }
+
+    @GetMapping("/like")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> checkIfPostLikedByUser(@RequestParam Long userId, @RequestParam Long postId) {
+        return likeService.checkIfPostLikedByUser(userId, postId);
     }
 
 }

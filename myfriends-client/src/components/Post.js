@@ -1,6 +1,7 @@
 import {
   AddCommentOutlined,
   CommentOutlined,
+  Favorite,
   FavoriteBorder,
 } from "@mui/icons-material";
 import {
@@ -17,13 +18,15 @@ import {
 } from "@mui/material";
 import { Stack } from "@mui/system";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import authHeader from "../services/authentication/auth-header";
 import dateUtils from "../utils/dateUtils";
 
 const Post = ({ postEntity }) => {
+  console.log(postEntity);
   const [post, setPost] = useState(postEntity);
   const [commentText, setCommentText] = useState("");
+  const [liked, setLiked] = useState(false);
 
   const postedBy = post.post.user.username;
   const profilePicturePostBy = post.post.user.profilePicture;
@@ -76,8 +79,21 @@ const Post = ({ postEntity }) => {
       userLikeId: user.id,
     };
 
-    axios.post(process.env.REACT_APP_BASE_API_URL + "addLike", body, config);
+    axios.post(process.env.REACT_APP_BASE_API_URL + "like", body, config);
   };
+
+  useEffect(() => {
+    axios
+      .get(
+        process.env.REACT_APP_BASE_API_URL +
+          `like?userId=${user.id}&postId=${post.post.id}`,
+        config
+      )
+      .then((response) => {
+        console.log(response.data);
+        setLiked(response.data);
+      });
+  }, []);
 
   return (
     <Card>
@@ -91,7 +107,8 @@ const Post = ({ postEntity }) => {
         <Stack spacing={2}>
           <Stack direction={"row"} spacing={2}>
             <Stack direction={"row"} spacing={1} onClick={handleLike}>
-              <FavoriteBorder />
+              {liked ? <Favorite /> : <FavoriteBorder />}
+
               <Typography>{numberOfLikes}</Typography>
             </Stack>
 
