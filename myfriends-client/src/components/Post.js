@@ -35,13 +35,12 @@ const Post = ({ postEntity }) => {
   const comments = post.comments;
   const imageUrl = post.post.imageUrl;
 
+  const user = JSON.parse(localStorage.getItem("user"));
+  const config = {
+    headers: authHeader(),
+  };
+
   const handleAddComment = () => {
-    const user = JSON.parse(localStorage.getItem("user"));
-
-    const config = {
-      headers: authHeader(),
-    };
-
     const body = {
       commentText: commentText,
       userId: user.id,
@@ -71,6 +70,15 @@ const Post = ({ postEntity }) => {
     }
   };
 
+  const handleLike = () => {
+    const body = {
+      postId: post.post.id,
+      userLikeId: user.id,
+    };
+
+    axios.post(process.env.REACT_APP_BASE_API_URL + "addLike", body, config);
+  };
+
   return (
     <Card>
       <CardHeader
@@ -82,7 +90,7 @@ const Post = ({ postEntity }) => {
       <CardContent>
         <Stack spacing={2}>
           <Stack direction={"row"} spacing={2}>
-            <Stack direction={"row"} spacing={1}>
+            <Stack direction={"row"} spacing={1} onClick={handleLike}>
               <FavoriteBorder />
               <Typography>{numberOfLikes}</Typography>
             </Stack>

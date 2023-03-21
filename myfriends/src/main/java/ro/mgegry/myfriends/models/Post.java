@@ -37,6 +37,11 @@ public class Post implements Comparable<Post>{
     @JoinColumn(name = "post_id")
     private List<Comment> comments;
 
+    @JsonIgnore
+    @OneToMany
+    @JoinColumn(name = "post_id")
+    private List<Like> likes;
+
     @Override
     public int compareTo(Post o) {
         return createdAt.compareTo(o.createdAt);
