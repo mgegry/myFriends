@@ -17,6 +17,7 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import AddProfilePictureDialog from "../../components/AddProfilePictureDialog";
 import PostModal from "../../components/PostModal";
 import authHeader from "../../services/authentication/auth-header";
 import stringUtils from "../../utils/stringUtils";

@@ -2,10 +2,12 @@ package ro.mgegry.myfriends.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ro.mgegry.myfriends.services.UserService;
+import ro.mgegry.myfriends.services.payload.request.UpdateProfilePictureRequest;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -26,5 +28,12 @@ public class UserController {
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getProfile(@PathVariable String username) {
         return userService.getProfile(username);
+    }
+
+    @PutMapping("/{username}")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?>  updateProfilePicture(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorization,
+                                                   @RequestBody UpdateProfilePictureRequest body) {
+        return userService.updateProfilePicture(authorization, body);
     }
 }

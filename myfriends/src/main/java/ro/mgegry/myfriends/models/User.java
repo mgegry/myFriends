@@ -53,6 +53,9 @@ public class User {
         @Size(max = 255)
         private String bio;
 
+        @Column(name = "profile_picture")
+        private String profilePicture;
+
         @Column(name = "is_private")
         private Boolean isPrivate = false;
 

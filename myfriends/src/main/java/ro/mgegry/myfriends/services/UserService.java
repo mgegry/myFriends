@@ -1,16 +1,14 @@
 package ro.mgegry.myfriends.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.transaction.annotation.Transactional;
 import ro.mgegry.myfriends.models.User;
 import ro.mgegry.myfriends.repositories.UserRepository;
 import ro.mgegry.myfriends.security.jwt.JwtUtils;
+import ro.mgegry.myfriends.services.payload.request.UpdateProfilePictureRequest;
 import ro.mgegry.myfriends.services.payload.response.ProfileResponse;
 
 import java.util.Optional;
@@ -60,6 +58,17 @@ public class UserService {
 
 
         return new ResponseEntity<>(profileResponse, HttpStatus.OK);
+    }
+
+    @Transactional
+    public ResponseEntity<?> updateProfilePicture(String token, UpdateProfilePictureRequest body) {
+
+        String username = jwtUtils.getUserNameFromJwtToken(token.substring(7));
+        String url = body.getPictureUrl();
+
+        userRepository.updateProfilePicture(username, url);
+
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
 }

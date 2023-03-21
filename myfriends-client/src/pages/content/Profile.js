@@ -17,6 +17,7 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import AddProfilePictureDialog from "../../components/AddProfilePictureDialog";
 import PostModal from "../../components/PostModal";
 import authHeader from "../../services/authentication/auth-header";
 import dateUtils from "../../utils/dateUtils";
@@ -57,6 +58,16 @@ const Profile = () => {
   const [friends, setFriends] = React.useState([]);
   const [requestUser, setRequestUser] = React.useState(null);
   const [modalPost, setModalPost] = React.useState(null);
+
+  const [changePicture, setChangePicture] = React.useState(false);
+
+  const handleOpenChangePicture = () => {
+    setChangePicture(true);
+  };
+
+  const handleCloseChangePicture = () => {
+    setChangePicture(false);
+  };
 
   const user = JSON.parse(localStorage.getItem("user"));
   const config = {
@@ -148,7 +159,12 @@ const Profile = () => {
           {/* Profile info */}
           <Paper sx={{ padding: "20px", minHeight: "17vh" }}>
             <Stack direction={"row"} spacing={10}>
-              <Avatar sx={{ width: 150, height: 150 }}></Avatar>
+              <div onClick={handleOpenChangePicture}>
+                <Avatar
+                  sx={{ width: 150, height: 150 }}
+                  src={requestUser ? requestUser.profilePicture : null}
+                ></Avatar>
+              </div>
               <Stack spacing={3}>
                 <Stack spacing={1}>
                   <Typography fontSize={20}>
@@ -280,6 +296,10 @@ const Profile = () => {
         </Stack>
       </Container>
       {showModal()}
+      <AddProfilePictureDialog
+        open={changePicture}
+        handleClose={handleCloseChangePicture}
+      />
     </Grid>
   );
 };

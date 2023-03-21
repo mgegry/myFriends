@@ -148,7 +148,7 @@ public class FriendService {
         if (list2.size() != 0) {
             interacted = true;
         }
-        
+
         return new ResponseEntity<>(interacted, HttpStatus.OK);
     }
 
