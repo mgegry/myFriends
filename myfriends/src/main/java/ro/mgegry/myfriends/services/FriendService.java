@@ -16,10 +16,7 @@ import ro.mgegry.myfriends.services.payload.request.SendFriendRequestRequest;
 import ro.mgegry.myfriends.services.payload.response.FriendResponse;
 import ro.mgegry.myfriends.services.payload.response.NumberOfFriendsResponse;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class FriendService {
@@ -41,54 +38,42 @@ public class FriendService {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
-        Set<FriendResponse> users = new HashSet<>();
+        List<FriendResponse> users = new ArrayList<>();
 
         Optional<User> user = userRepository.findByUsername(username);
 
         if (user.isPresent()) {
+            List<Friend> friends = friendRepository.findAllFriendsForUser(user.get());
 
-            List<Friend> friends = friendRepository.findByFirstUser(user.get());
+            for (Friend f : friends) {
+                Optional<User> returnUserOptional;
+                if (f.getFirstUser().getUsername().equals(username)) {
+                    returnUserOptional = userRepository.findByUsername(f.getSecondUser().getUsername());
+                } else {
+                    returnUserOptional = userRepository.findByUsername(f.getFirstUser().getUsername());
+                }
 
-            for (Friend friend: friends) {
-
-                User gotUser = friend.getSecondUser();
-                FriendResponse toAddFriend = new FriendResponse(
-                        gotUser.getId(),
-                        gotUser.getFirstName(),
-                        gotUser.getLastName(),
-                        gotUser.getUsername(),
-                        gotUser.getEmail(),
-                        gotUser.getProfilePicture(),
-                        friend.getCreatedAt()
-                );
-
-
-                users.add(toAddFriend);
+                if (returnUserOptional.isPresent()) {
+                    User returnUser = returnUserOptional.get();
+                    users.add(new FriendResponse(
+                            returnUser.getId(),
+                            returnUser.getFirstName(),
+                            returnUser.getLastName(),
+                            returnUser.getUsername(),
+                            returnUser.getEmail(),
+                            returnUser.getProfilePicture(),
+                            f.getCreatedAt()
+                    ));
+                }
+            }
+                return new ResponseEntity<>(users, HttpStatus.OK);
             }
 
-            friends = friendRepository.findBySecondUser(user.get());
 
-            for (Friend friend: friends) {
-                User gotUser = friend.getFirstUser();
-                FriendResponse toAddFriend = new FriendResponse(
-                        gotUser.getId(),
-                        gotUser.getFirstName(),
-                        gotUser.getLastName(),
-                        gotUser.getUsername(),
-                        gotUser.getEmail(),
-                        gotUser.getProfilePicture(),
-                        friend.getCreatedAt()
-                );
-
-
-                users.add(toAddFriend);
-            }
-
-            return new ResponseEntity<>(users, HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }
+
 
     public ResponseEntity<?> deleteFriend(String username, String friend, String authorization) {
         if (!jwtUtils.checkAuthorizationForUsername(username, authorization)) {

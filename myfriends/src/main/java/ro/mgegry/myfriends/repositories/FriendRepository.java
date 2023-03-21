@@ -17,15 +17,13 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
     Friend findByFirstUserAndSecondUser(User first, User second);
 
     @Query("SELECT f FROM Friend f WHERE f.firstUser = ?1 OR f.secondUser = ?1")
-    List<Friend> findAllFriendsForUser(User user);
+    List<Friend> findAllFriendsForUser(User user); // TODO: change method to get a username or an ID as parameter
 
     @Query("SELECT COUNT(f) FROM Friend f WHERE f.firstUser.id = ?1 OR f.secondUser.id = ?1")
     Long findAllFriendsForUserId(Long id);
 
-    List<Friend> findByFirstUser(User user);
-    List<Friend> findBySecondUser(User user);
-
-    @Query("SELECT f FROM Friend f WHERE ((f.firstUser.id = ?1 AND f.secondUser.id = ?2) OR (f.firstUser.id = ?2 AND f.secondUser.id = ?1))")
+    @Query("SELECT f FROM Friend f WHERE " +
+            "((f.firstUser.id = ?1 AND f.secondUser.id = ?2) OR " +
+            "(f.firstUser.id = ?2 AND f.secondUser.id = ?1))")
     List<Friend> checkIfFriendExists(Long first, Long second);
-
 }
