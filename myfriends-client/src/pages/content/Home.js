@@ -122,7 +122,7 @@ const Home = () => {
                         handleUserProfile(user.username);
                       }}
                     >
-                      <Avatar></Avatar>
+                      <Avatar src={user.profilePicture}></Avatar>
                       <Typography>
                         <b>{user.username}</b>
                       </Typography>
