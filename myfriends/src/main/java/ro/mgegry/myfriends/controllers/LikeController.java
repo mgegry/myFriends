@@ -2,15 +2,12 @@ package ro.mgegry.myfriends.controllers;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ro.mgegry.myfriends.models.Like;
 import ro.mgegry.myfriends.services.LikeService;
-import ro.mgegry.myfriends.services.payload.request.CheckIfPostLikedByUserRequest;
 
 @Controller
 @RequestMapping("/api")
@@ -26,6 +23,11 @@ public class LikeController {
         return likeService.addLike(like);
     }
 
+    @DeleteMapping("/like")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> deleteLike(@RequestParam Long userId, @RequestParam Long postId) {
+        return likeService.deleteLike(userId, postId);
+    }
     @GetMapping("/like")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> checkIfPostLikedByUser(@RequestParam Long userId, @RequestParam Long postId) {

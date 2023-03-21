@@ -23,17 +23,15 @@ import authHeader from "../services/authentication/auth-header";
 import dateUtils from "../utils/dateUtils";
 
 const Post = ({ postEntity }) => {
-  console.log(postEntity);
   const [post, setPost] = useState(postEntity);
   const [commentText, setCommentText] = useState("");
   const [liked, setLiked] = useState(false);
+  const [numberOfLikes, setNumberOfLikes] = useState(post.likes.length);
 
   const postedBy = post.post.user.username;
   const profilePicturePostBy = post.post.user.profilePicture;
 
   const description = post.post.description;
-
-  const numberOfLikes = post.likes.length;
   const numberOfComments = post.comments.length;
   const comments = post.comments;
   const imageUrl = post.post.imageUrl;
@@ -79,7 +77,25 @@ const Post = ({ postEntity }) => {
       userLikeId: user.id,
     };
 
-    axios.post(process.env.REACT_APP_BASE_API_URL + "like", body, config);
+    axios
+      .post(process.env.REACT_APP_BASE_API_URL + "like", body, config)
+      .then(() => {
+        setLiked(true);
+        setNumberOfLikes(numberOfLikes + 1);
+      });
+  };
+
+  const handleUnlike = () => {
+    axios
+      .delete(
+        process.env.REACT_APP_BASE_API_URL +
+          `like?postId=${post.post.id}&userId=${user.id}`,
+        config
+      )
+      .then(() => {
+        setLiked(false);
+        setNumberOfLikes(numberOfLikes - 1);
+      });
   };
 
   useEffect(() => {
@@ -90,7 +106,6 @@ const Post = ({ postEntity }) => {
         config
       )
       .then((response) => {
-        console.log(response.data);
         setLiked(response.data);
       });
   }, []);
@@ -106,11 +121,25 @@ const Post = ({ postEntity }) => {
       <CardContent>
         <Stack spacing={2}>
           <Stack direction={"row"} spacing={2}>
-            <Stack direction={"row"} spacing={1} onClick={handleLike}>
-              {liked ? <Favorite /> : <FavoriteBorder />}
-
-              <Typography>{numberOfLikes}</Typography>
-            </Stack>
+            {liked ? (
+              <Stack direction={"row"} spacing={1}>
+                <Favorite
+                  onClick={() => {
+                    handleUnlike();
+                  }}
+                />
+                <Typography>{numberOfLikes}</Typography>
+              </Stack>
+            ) : (
+              <Stack direction={"row"} spacing={1}>
+                <FavoriteBorder
+                  onClick={() => {
+                    handleLike();
+                  }}
+                />
+                <Typography>{numberOfLikes}</Typography>
+              </Stack>
+            )}
 
             <Stack direction={"row"} spacing={1}>
               <CommentOutlined />
