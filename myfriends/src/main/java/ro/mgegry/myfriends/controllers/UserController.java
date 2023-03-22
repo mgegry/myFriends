@@ -42,7 +42,7 @@ public class UserController {
      * Get all users from the database - only for admin
      * @return a list of User objects
      */
-    @GetMapping("/users")
+    @GetMapping("admin/users")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getAllUserAccounts() {
         return userService.getAllUserAccounts();
@@ -54,7 +54,7 @@ public class UserController {
      * @param userId the User ID to delete
      * @return status code for the request
      */
-    @DeleteMapping("/users/{userId}")
+    @DeleteMapping("admin/users/{userId}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteUser(@PathVariable Long userId) {
         return userService.deleteUser(userId);

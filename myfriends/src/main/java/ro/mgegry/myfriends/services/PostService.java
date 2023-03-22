@@ -80,4 +80,13 @@ public class PostService {
 
         return new ResponseEntity<>(postResponse, HttpStatus.OK);
     }
+
+    /**
+     * Get all the posts for a given user
+     * @param userId the ID of the user for which the posts are returned
+     * @return a list of all posts and an HTTP status code
+     */
+    public ResponseEntity<?> getPostsForUserWithId(Long userId) {
+        return new ResponseEntity<>(postRepository.findByUserId(userId), HttpStatus.OK);
+    }
 }

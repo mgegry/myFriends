@@ -36,4 +36,16 @@ public class PostController {
         return postService.getPostById(postId);
     }
 
+
+    /**
+     * Get all the posts for a given user
+     * @param userId the ID of the user for which the posts are returned
+     * @return a list of all posts and an HTTP status code
+     */
+    @GetMapping("admin/posts/{userId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getPostsForUserWithId(@PathVariable Long userId) {
+        return postService.getPostsForUserWithId(userId);
+    }
+
 }

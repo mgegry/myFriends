@@ -39,7 +39,7 @@ const UserList = () => {
 
   useEffect(() => {
     axios
-      .get(process.env.REACT_APP_BASE_API_URL + "users", config)
+      .get(process.env.REACT_APP_BASE_API_URL + "admin/users", config)
       .then((response) => {
         setUsers(response.data);
       });
@@ -51,7 +51,10 @@ const UserList = () => {
 
   const handleDelete = (userId, index) => {
     axios
-      .delete(process.env.REACT_APP_BASE_API_URL + `users/${userId}`, config)
+      .delete(
+        process.env.REACT_APP_BASE_API_URL + `admin/users/${userId}`,
+        config
+      )
       .then(() => {
         var copy = [...users];
         copy.splice(index, 1);

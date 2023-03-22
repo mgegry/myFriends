@@ -13,6 +13,8 @@ import java.util.List;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findByPost(Post post);
 
+    List<Comment> findByPostId(Long postId);
+
     @Modifying
     @Query("DELETE FROM Comment c WHERE c.userId = ?1")
     void deleteCommentsForUser(Long userId);

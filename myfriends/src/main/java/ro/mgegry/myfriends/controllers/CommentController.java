@@ -23,10 +23,21 @@ public class CommentController {
 
     @PostMapping("/{username}/comment")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> addNewPost(@PathVariable String username,
+    public ResponseEntity<?> addNewComment(@PathVariable String username,
                                         @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization,
                                         @RequestBody Comment comment) {
-        return commentService.addNewPost(username, authorization, comment);
+        return commentService.addNewComment(username, authorization, comment);
+    }
+
+    /**
+     * Get all comments for specific post
+     * @param postId the post id for which to get the comments
+     * @return a response entity containing a list of comments and a status code
+     */
+    @GetMapping("/comments/{postId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getCommentsForPostId(@PathVariable Long postId) {
+        return commentService.getCommentsForPostId(postId);
     }
 
 }

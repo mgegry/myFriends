@@ -14,6 +14,9 @@ import UserProfile from "./pages/content/user/UserProfile";
 import HomeAdmin from "./pages/content/admin/HomeAdmin";
 import UserList from "./pages/content/admin/UserList";
 import UserItem from "./pages/content/admin/UserItem";
+import PostsUserAdmin from "./components/admin/PostsUserAdmin";
+import CommentsUserAdmin from "./components/admin/CommentsUserAdmin";
+import LikesUserAdmin from "./components/admin/LikesUserAdmin";
 
 const router = createBrowserRouter([
   {
@@ -60,6 +63,20 @@ const router = createBrowserRouter([
       {
         path: "/admin/users/:userId",
         element: <UserItem />,
+        children: [
+          {
+            path: "/admin/users/:userId/posts",
+            element: <PostsUserAdmin />,
+          },
+          {
+            path: "/admin/users/:userId/comments",
+            element: <CommentsUserAdmin />,
+          },
+          {
+            path: "/admin/users/:userId/likes",
+            element: <LikesUserAdmin />,
+          },
+        ],
       },
     ],
   },

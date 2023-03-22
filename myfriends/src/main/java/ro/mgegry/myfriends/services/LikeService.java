@@ -29,4 +29,13 @@ public class LikeService {
 
         return new ResponseEntity<>(likeRepository.existsByUserLikeIdAndPostId(userId, postId), HttpStatus.OK);
     }
+
+    /**
+     * Get all the likes for a particular post
+     * @param postId the post ID for which to get the likes
+     * @return a list containing all the likes
+     */
+    public ResponseEntity<?> getLikesForPostId(Long postId) {
+        return new ResponseEntity<>(likeRepository.findByPostId(postId), HttpStatus.OK);
+    }
 }

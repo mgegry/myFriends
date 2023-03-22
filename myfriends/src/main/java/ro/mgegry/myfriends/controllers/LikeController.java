@@ -34,4 +34,15 @@ public class LikeController {
         return likeService.checkIfPostLikedByUser(userId, postId);
     }
 
+    /**
+     * Get all the likes for a particular post
+     * @param postId the post ID for which to get the likes
+     * @return a list containing all the likes
+     */
+    @GetMapping("/likes/{postId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getLikesForPostId(@PathVariable Long postId) {
+        return likeService.getLikesForPostId(postId);
+    }
+
 }
