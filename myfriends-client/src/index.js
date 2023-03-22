@@ -61,11 +61,11 @@ const router = createBrowserRouter([
     children: [
       { path: "/admin", element: <UserList /> },
       {
-        path: "/admin/users/:userId",
+        path: "/admin/users/:userId/",
         element: <UserItem />,
         children: [
           {
-            path: "/admin/users/:userId/posts",
+            path: "/admin/users/:userId/",
             element: <PostsUserAdmin />,
           },
           {

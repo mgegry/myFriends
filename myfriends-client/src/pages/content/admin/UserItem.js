@@ -26,7 +26,7 @@ const UserItem = () => {
             <Stack direction={"row"} spacing={5}>
               <Button
                 onClick={() => {
-                  navigate(`/admin/users/${userId}/posts`);
+                  navigate(`/admin/users/${userId}`);
                 }}
               >
                 Posts
