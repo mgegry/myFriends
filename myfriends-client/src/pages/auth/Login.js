@@ -50,7 +50,11 @@ function Login() {
           localStorage.setItem("user", JSON.stringify(response.data));
         }
         setRequestFail(false);
-        navigate("/");
+        if (response.data.roles.includes("ROLE_ADMIN")) {
+          navigate("/admin");
+        } else {
+          navigate("/");
+        }
       })
       .catch((err) => {
         setRequestFail(true);
