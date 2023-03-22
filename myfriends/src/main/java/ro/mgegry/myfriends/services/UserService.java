@@ -6,8 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.mgegry.myfriends.models.ERole;
+import ro.mgegry.myfriends.models.Post;
 import ro.mgegry.myfriends.models.User;
-import ro.mgegry.myfriends.repositories.UserRepository;
+import ro.mgegry.myfriends.repositories.*;
 import ro.mgegry.myfriends.security.jwt.JwtUtils;
 import ro.mgegry.myfriends.services.payload.request.UpdateProfilePictureRequest;
 import ro.mgegry.myfriends.services.payload.response.ProfileResponse;
@@ -24,6 +25,21 @@ public class UserService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    PostRepository postRepository;
+
+    @Autowired
+    CommentRepository commentRepository;
+
+    @Autowired
+    LikeRepository likeRepository;
+
+    @Autowired
+    FriendRepository friendRepository;
+
+    @Autowired
+    FriendRequestRepository friendRequestRepository;
 
     public ResponseEntity<?> getUser(String username, String authorization) {
 
@@ -106,6 +122,21 @@ public class UserService {
      */
     @Transactional
     public ResponseEntity<?> deleteUser(Long userId) {
+
+        commentRepository.deleteCommentsForUser(userId);
+        likeRepository.deleteAllLikesForUser(userId);
+
+        List<Post> posts = postRepository.findByUserId(userId);
+
+        for (Post p : posts) {
+            commentRepository.deleteCommentsForPost(p.getId());
+            likeRepository.deleteAllLikesForPost(p.getId());
+        }
+
+        postRepository.deletePostsForUser(userId);
+        friendRepository.deleteAllFriendsForUser(userId);
+        friendRequestRepository.deleteAllFriendRequestsForUser(userId);
+
         userRepository.deleteUser(userId);
 
         return new ResponseEntity<>(HttpStatus.OK);

@@ -1,31 +1,25 @@
-import { Delete, ResetTv } from "@mui/icons-material";
+import { Delete } from "@mui/icons-material";
 import {
-  FormControl,
   Grid,
   IconButton,
-  InputLabel,
-  MenuItem,
   Paper,
-  Select,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  TableSortLabel,
   Typography,
 } from "@mui/material";
-import { Box, Stack } from "@mui/system";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Form, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import authHeader from "../../../services/authentication/auth-header";
 import dateUtils from "../../../utils/dateUtils";
 const UserList = () => {
   const [users, setUsers] = useState([]);
-  const [orderBy, setOrderBy] = useState("");
-  const [order, setOrder] = useState("asc");
+  //   const [orderBy, setOrderBy] = useState("");
+  //   const [order, setOrder] = useState("asc");
 
   const navigate = useNavigate();
 

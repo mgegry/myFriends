@@ -19,4 +19,12 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
     @Modifying
     @Query("DELETE FROM Like l WHERE l.userLikeId =?1 AND l.postId = ?2")
     void deleteLike(Long userId, Long likeId);
+
+    @Modifying
+    @Query("DELETE FROM Like l WHERE l.userLikeId = ?1")
+    void deleteAllLikesForUser(Long userId);
+
+    @Modifying
+    @Query("DELETE FROM Like l WHERE l.postId = ?1")
+    void deleteAllLikesForPost(Long postId);
 }

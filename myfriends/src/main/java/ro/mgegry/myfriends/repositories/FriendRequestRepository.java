@@ -20,4 +20,8 @@ public interface FriendRequestRepository extends JpaRepository<FriendRequest, Lo
 
     @Query("SELECT f FROM FriendRequest f WHERE ((f.fromUserId = ?1 AND f.toUserId = ?2) OR (f.fromUserId = ?2 AND f.toUserId = ?1))")
     List<FriendRequest> checkIfFriendRequestExists(Long first, Long second);
+
+    @Modifying
+    @Query("DELETE FROM FriendRequest fr WHERE fr.fromUserId = ?1 OR fr.toUserId = ?1")
+    void deleteAllFriendRequestsForUser(Long userId);
 }

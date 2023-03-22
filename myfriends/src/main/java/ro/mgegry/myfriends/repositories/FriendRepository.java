@@ -1,6 +1,7 @@
 package ro.mgegry.myfriends.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ro.mgegry.myfriends.models.Friend;
@@ -26,4 +27,8 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
             "((f.firstUser.id = ?1 AND f.secondUser.id = ?2) OR " +
             "(f.firstUser.id = ?2 AND f.secondUser.id = ?1))")
     List<Friend> checkIfFriendExists(Long first, Long second);
+
+    @Modifying
+    @Query("DELETE FROM Friend f WHERE f.firstUser.id = ?1 OR f.secondUser.id = ?1")
+    void deleteAllFriendsForUser(Long userId);
 }

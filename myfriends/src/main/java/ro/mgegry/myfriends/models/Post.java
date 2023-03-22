@@ -25,12 +25,12 @@ public class Post implements Comparable<Post>{
     @Column(name = "created_at")
     private Date createdAt;
 
-    @Column(name = "user_id")
-    private Long userId;
-
     @ManyToOne
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
+
+    @Column(name = "user_id")
+    private Long userId;
 
     @JsonIgnore
     @OneToMany
