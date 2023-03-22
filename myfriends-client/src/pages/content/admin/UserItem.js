@@ -1,5 +1,5 @@
 import { Widgets } from "@mui/icons-material";
-import { Button, Grid, Link, Paper, Stack } from "@mui/material";
+import { Button, Grid, Link, Paper, Stack, Typography } from "@mui/material";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 
 const UserItem = () => {
@@ -26,7 +26,7 @@ const UserItem = () => {
             <Stack direction={"row"} spacing={5}>
               <Button
                 onClick={() => {
-                  navigate(`/admin/users/${userId}`);
+                  navigate(`/admin/users/${userId}/posts`);
                 }}
               >
                 Posts
