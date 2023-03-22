@@ -36,4 +36,15 @@ public class UserController {
                                                    @RequestBody UpdateProfilePictureRequest body) {
         return userService.updateProfilePicture(authorization, body);
     }
+
+
+    /**
+     * Get all users from the database - only for admin
+     * @return a list of User objects
+     */
+    @GetMapping("/users")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getAllUserAccounts() {
+        return userService.getAllUserAccounts();
+    }
 }

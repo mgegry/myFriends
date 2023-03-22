@@ -12,6 +12,8 @@ import Notifications from "./pages/content/user/Notifications";
 import Settings from "./pages/content/user/Settings";
 import UserProfile from "./pages/content/user/UserProfile";
 import HomeAdmin from "./pages/content/admin/HomeAdmin";
+import UserList from "./pages/content/admin/UserList";
+import UserItem from "./pages/content/admin/UserItem";
 
 const router = createBrowserRouter([
   {
@@ -54,10 +56,10 @@ const router = createBrowserRouter([
     path: "/admin",
     element: <HomeAdmin />,
     children: [
-      { path: "/admin/users", element: <div>123</div> },
+      { path: "/admin/users", element: <UserList /> },
       {
         path: "/admin/users/:userId",
-        element: <HomeAdmin />,
+        element: <UserItem />,
       },
     ],
   },

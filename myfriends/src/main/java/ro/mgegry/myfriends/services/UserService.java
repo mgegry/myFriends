@@ -5,12 +5,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ro.mgegry.myfriends.models.ERole;
 import ro.mgegry.myfriends.models.User;
 import ro.mgegry.myfriends.repositories.UserRepository;
 import ro.mgegry.myfriends.security.jwt.JwtUtils;
 import ro.mgegry.myfriends.services.payload.request.UpdateProfilePictureRequest;
 import ro.mgegry.myfriends.services.payload.response.ProfileResponse;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -69,6 +72,31 @@ public class UserService {
         userRepository.updateProfilePicture(username, url);
 
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
+    // ADMIN methods
+
+    /**
+     * Get all the user accounts from the database
+     * @return a list of User objects
+     */
+    public ResponseEntity<?> getAllUserAccounts() {
+
+        List<User> users = userRepository.findAll();
+
+        List<User> toRemove = new ArrayList<>();
+
+        for (User u : users) {
+            u.getRoles().forEach(role -> {
+                if (role.getName().equals(ERole.ROLE_ADMIN)) {
+                    toRemove.add(u);
+                }
+            });
+        }
+
+        users.removeAll(toRemove);
+
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
 }
