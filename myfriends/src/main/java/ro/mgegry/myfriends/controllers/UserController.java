@@ -59,4 +59,10 @@ public class UserController {
     public ResponseEntity<?> deleteUser(@PathVariable Long userId) {
         return userService.deleteUser(userId);
     }
+
+    @GetMapping("admin/users/{userId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getUserById(@PathVariable Long userId) {
+        return userService.getUserById(userId);
+    }
 }

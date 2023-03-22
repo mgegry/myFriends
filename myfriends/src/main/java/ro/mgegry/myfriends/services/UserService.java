@@ -142,4 +142,8 @@ public class UserService {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    public ResponseEntity<?> getUserById(Long userId) {
+        return new ResponseEntity<>(userRepository.findById(userId), HttpStatus.OK);
+    }
+
 }

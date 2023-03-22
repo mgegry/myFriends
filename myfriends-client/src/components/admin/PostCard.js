@@ -34,7 +34,7 @@ const PostCard = ({ postEntity }) => {
   }, []);
 
   const handleUserProfile = (userId) => {
-    navigate(`/admin/users/${userId}`);
+    navigate(`/admin/users/${userId}/`);
   };
 
   return (

@@ -58,25 +58,23 @@ const router = createBrowserRouter([
   {
     path: "/admin",
     element: <HomeAdmin />,
+    children: [{ path: "/admin", element: <UserList /> }],
+  },
+  {
+    path: "/admin/users/:userId/",
+    element: <UserItem />,
     children: [
-      { path: "/admin", element: <UserList /> },
       {
-        path: "/admin/users/:userId/",
-        element: <UserItem />,
-        children: [
-          {
-            path: "/admin/users/:userId/posts",
-            element: <PostsUserAdmin />,
-          },
-          {
-            path: "/admin/users/:userId/comments",
-            element: <CommentsUserAdmin />,
-          },
-          {
-            path: "/admin/users/:userId/likes",
-            element: <LikesUserAdmin />,
-          },
-        ],
+        path: "/admin/users/:userId/posts",
+        element: <PostsUserAdmin />,
+      },
+      {
+        path: "/admin/users/:userId/comments",
+        element: <CommentsUserAdmin />,
+      },
+      {
+        path: "/admin/users/:userId/likes",
+        element: <LikesUserAdmin />,
       },
     ],
   },
