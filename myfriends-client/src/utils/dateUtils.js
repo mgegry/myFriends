@@ -9,7 +9,7 @@ class DateUtils {
       minutes = "0" + minutes;
     }
 
-    if (value.getHours.toString().length === 1) {
+    if (value.getHours().toString().length === 1) {
       hours = "0" + hours;
     }
 
