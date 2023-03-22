@@ -99,4 +99,16 @@ public class UserService {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
+    /**
+     * Delete a user account from the database
+     * @param userId the ID of the user to delete
+     * @return Http Status Code
+     */
+    @Transactional
+    public ResponseEntity<?> deleteUser(Long userId) {
+        userRepository.deleteUser(userId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

@@ -55,25 +55,35 @@ const UserList = () => {
     navigate(`/admin/users/${userId}`);
   };
 
-  function stableSort(array, comparator) {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-      const order = comparator(a[0], b[0]);
-      if (order !== 0) {
-        return order;
-      }
-      return a[1] - b[1];
-    });
-    return stabilizedThis.map((el) => el[0]);
-  }
-
-  const handleSelectChange = (event) => {
-    setOrderBy(event.target.value);
+  const handleDelete = (userId, index) => {
+    axios
+      .delete(process.env.REACT_APP_BASE_API_URL + `users/${userId}`, config)
+      .then(() => {
+        var copy = [...users];
+        copy.splice(index, 1);
+        setUsers(copy);
+      });
   };
 
-  const handleSelectOrder = (event) => {
-    setOrder(event.target.value);
-  };
+  //   function stableSort(array, comparator) {
+  //     const stabilizedThis = array.map((el, index) => [el, index]);
+  //     stabilizedThis.sort((a, b) => {
+  //       const order = comparator(a[0], b[0]);
+  //       if (order !== 0) {
+  //         return order;
+  //       }
+  //       return a[1] - b[1];
+  //     });
+  //     return stabilizedThis.map((el) => el[0]);
+  //   }
+
+  //   const handleSelectChange = (event) => {
+  //     setOrderBy(event.target.value);
+  //   };
+
+  //   const handleSelectOrder = (event) => {
+  //     setOrder(event.target.value);
+  //   };
 
   return (
     <Grid container>
@@ -125,7 +135,7 @@ const UserList = () => {
             </TableHead>
 
             <TableBody>
-              {users.map((user) => {
+              {users.map((user, index) => {
                 return (
                   <TableRow key={user.id}>
                     <TableCell
@@ -151,7 +161,11 @@ const UserList = () => {
                       {dateUtils.getDateAndTime(user.createdAt)}
                     </TableCell>
                     <TableCell>
-                      <IconButton>
+                      <IconButton
+                        onClick={() => {
+                          handleDelete(user.id, index);
+                        }}
+                      >
                         <Delete />
                       </IconButton>
                     </TableCell>

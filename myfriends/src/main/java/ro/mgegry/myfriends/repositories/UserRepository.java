@@ -23,4 +23,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying
     @Query("UPDATE User u SET u.profilePicture = ?2 WHERE u.username = ?1")
     void updateProfilePicture(String username, String imageUrl);
+
+    @Modifying
+    @Query("DELETE FROM User u WHERE u.id = ?1")
+    void deleteUser(Long userId);
 }

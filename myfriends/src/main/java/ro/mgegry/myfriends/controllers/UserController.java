@@ -47,4 +47,16 @@ public class UserController {
     public ResponseEntity<?> getAllUserAccounts() {
         return userService.getAllUserAccounts();
     }
+
+
+    /**
+     * Delete user from the database - only for admin
+     * @param userId the User ID to delete
+     * @return status code for the request
+     */
+    @DeleteMapping("/users/{userId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> deleteUser(@PathVariable Long userId) {
+        return userService.deleteUser(userId);
+    }
 }
