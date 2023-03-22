@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import authHeader from "../../services/authentication/auth-header";
+import authHeader from "../../../services/authentication/auth-header";
 import { useNavigate } from "react-router-dom";
 
 const Notifications = () => {

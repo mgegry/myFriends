@@ -6,11 +6,11 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import Root from "./pages/Root";
-import Home from "./pages/content/Home";
-import Profile from "./pages/content/Profile";
-import Notifications from "./pages/content/Notifications";
-import Settings from "./pages/content/Settings";
-import UserProfile from "./pages/content/UserProfile";
+import Home from "./pages/content/user/Home";
+import Profile from "./pages/content/user/Profile";
+import Notifications from "./pages/content/user/Notifications";
+import Settings from "./pages/content/user/Settings";
+import UserProfile from "./pages/content/user/UserProfile";
 
 const router = createBrowserRouter([
   {

@@ -1,4 +1,4 @@
-import { Notes, PersonAdd } from "@mui/icons-material";
+import { Delete, Notes } from "@mui/icons-material";
 import {
   Avatar,
   Grid,
@@ -16,11 +16,12 @@ import { Box, Container } from "@mui/system";
 import axios from "axios";
 import PropTypes from "prop-types";
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
-import AddProfilePictureDialog from "../../components/AddProfilePictureDialog";
-import PostModal from "../../components/PostModal";
-import authHeader from "../../services/authentication/auth-header";
-import stringUtils from "../../utils/stringUtils";
+import { useNavigate } from "react-router-dom";
+import AddProfilePictureDialog from "../../../components/AddProfilePictureDialog";
+import PostModal from "../../../components/PostModal";
+import authHeader from "../../../services/authentication/auth-header";
+import dateUtils from "../../../utils/dateUtils";
+import stringUtils from "../../../utils/stringUtils";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -51,86 +52,26 @@ function a11yProps(index) {
   };
 }
 
-const UserProfile = () => {
+const Profile = () => {
   const [value, setValue] = React.useState(0);
   const [posts, setPosts] = React.useState([]);
-  const [friendsNb, setFriendsNb] = React.useState([]);
+  const [friends, setFriends] = React.useState([]);
   const [requestUser, setRequestUser] = React.useState(null);
   const [modalPost, setModalPost] = React.useState(null);
-  const [isFriend, setIsFriend] = React.useState(null);
+
+  const [changePicture, setChangePicture] = React.useState(false);
+
+  const handleOpenChangePicture = () => {
+    setChangePicture(true);
+  };
+
+  const handleCloseChangePicture = () => {
+    setChangePicture(false);
+  };
 
   const user = JSON.parse(localStorage.getItem("user"));
-
   const config = {
     headers: authHeader(),
-  };
-
-  const { username } = useParams();
-
-  useEffect(() => {
-    axios
-      .get(process.env.REACT_APP_BASE_API_URL + `${username}/posts`, config)
-      .then((response) => {
-        setPosts(response.data);
-      })
-      .catch(() => {})
-      .finally(() => {});
-  }, []);
-
-  useEffect(() => {
-    axios
-      .get(process.env.REACT_APP_BASE_API_URL + `${username}`, config)
-      .then((response) => {
-        setRequestUser(response.data);
-
-        const body = {
-          fromUserId: user.id,
-          toUserId: response.data.id,
-        };
-
-        axios
-          .post(
-            process.env.REACT_APP_BASE_API_URL + "checkIfInteracted",
-            body,
-            config
-          )
-          .then((response) => {
-            setIsFriend(response.data.body);
-          });
-
-        axios
-          .get(
-            process.env.REACT_APP_BASE_API_URL +
-              `${response.data.id}/friends/number`,
-            config
-          )
-          .then((response) => {
-            setFriendsNb(response.data.numberOfFriends);
-          })
-          .catch((err) => {})
-          .finally(() => {});
-      })
-      .catch((err) => {})
-      .finally(() => {});
-  }, []);
-
-  const handleSendFriendRequest = () => {
-    const body = {
-      fromUserId: user.id,
-      toUserId: requestUser.id,
-    };
-
-    axios.post(
-      process.env.REACT_APP_BASE_API_URL + `${user.username}/sendRequest`,
-      body,
-      config
-    );
-
-    setIsFriend(true);
-  };
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
   };
 
   const [open, setOpen] = React.useState(false);
@@ -149,6 +90,68 @@ const UserProfile = () => {
 
   const handleClose = () => setOpen(false);
 
+  useEffect(() => {
+    axios
+      .get(
+        process.env.REACT_APP_BASE_API_URL + `${user.username}/posts`,
+        config
+      )
+      .then((response) => {
+        setPosts(response.data);
+      })
+      .catch(() => {})
+      .finally(() => {});
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get(
+        process.env.REACT_APP_BASE_API_URL + `${user.username}/friends`,
+        config
+      )
+      .then((response) => {
+        setFriends(response.data);
+      })
+      .catch(() => {})
+      .finally(() => {});
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get(process.env.REACT_APP_BASE_API_URL + `${user.username}/info`, config)
+      .then((response) => {
+        setRequestUser(response.data);
+      })
+      .catch((err) => {})
+      .finally(() => {});
+  }, []);
+
+  const handleDeleteFriend = (friendUsername, index) => {
+    axios
+      .delete(
+        process.env.REACT_APP_BASE_API_URL +
+          `${user.username}/friends/${friendUsername}`,
+        config
+      )
+      .then((response) => {
+        var copy = [...friends];
+        copy.splice(index, 1);
+        setFriends(copy);
+      })
+      .catch((err) => {})
+      .finally(() => {});
+  };
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  const navigate = useNavigate();
+
+  const handleUserProfile = (username) => {
+    navigate(`/${username}`);
+  };
+
   return (
     <Grid container>
       <Container maxWidth="md">
@@ -156,16 +159,21 @@ const UserProfile = () => {
           {/* Profile info */}
           <Paper sx={{ padding: "20px", minHeight: "17vh" }}>
             <Stack direction={"row"} spacing={10}>
-              <Avatar sx={{ width: 150, height: 150 }}></Avatar>
+              <div onClick={handleOpenChangePicture}>
+                <Avatar
+                  sx={{ width: 150, height: 150 }}
+                  src={requestUser ? requestUser.profilePicture : null}
+                ></Avatar>
+              </div>
               <Stack spacing={3}>
                 <Stack spacing={1}>
                   <Typography fontSize={20}>
-                    <b>{requestUser != null ? requestUser.username : ""}</b>
+                    <b>{user.username}</b>
                   </Typography>
 
                   <Stack direction={"row"} spacing={5}>
                     <Typography>{posts.length} Posts</Typography>
-                    <Typography>{friendsNb} Friends</Typography>
+                    <Typography>{friends.length} Friends</Typography>
                   </Stack>
                 </Stack>
 
@@ -196,25 +204,6 @@ const UserProfile = () => {
                   </Typography>
                 </Stack>
               </Stack>
-              <Box
-                sx={{
-                  width: "30%",
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                {isFriend != null ? (
-                  isFriend ? null : (
-                    <Box>
-                      <IconButton onClick={handleSendFriendRequest}>
-                        <PersonAdd />
-                      </IconButton>
-                    </Box>
-                  )
-                ) : null}
-              </Box>
             </Stack>
           </Paper>
 
@@ -228,6 +217,7 @@ const UserProfile = () => {
                 centered
               >
                 <Tab label="Posts" {...a11yProps(0)} />
+                <Tab label="Friends" {...a11yProps(1)} />
               </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
@@ -259,11 +249,58 @@ const UserProfile = () => {
                 })}
               </ImageList>
             </TabPanel>
+            <TabPanel value={value} index={1}>
+              {friends.map((friend, index) => {
+                return (
+                  <Paper
+                    elevation={2}
+                    key={friend.id}
+                    sx={{ padding: "20px", marginBottom: 1 }}
+                  >
+                    <Stack direction={"row"} justifyContent={"space-between"}>
+                      <Stack
+                        direction={"row"}
+                        sx={{ alignItems: "center", cursor: "pointer" }}
+                        spacing={2}
+                        onClick={() => {
+                          handleUserProfile(friend.username);
+                        }}
+                      >
+                        <Avatar src={friend.profilePicture}></Avatar>
+
+                        <Typography>
+                          <b>{friend.username}</b>
+                        </Typography>
+                      </Stack>
+                      <Stack direction={"row"} alignItems="center" spacing={2}>
+                        <Stack direction={"row"} spacing={1}>
+                          <Typography>Friends since:</Typography>
+                          <Typography>
+                            {dateUtils.getDate(friend.createdAt)}
+                          </Typography>
+                        </Stack>
+                        <IconButton
+                          onClick={() => {
+                            handleDeleteFriend(friend.username, index);
+                          }}
+                        >
+                          <Delete />
+                        </IconButton>
+                      </Stack>
+                    </Stack>
+                  </Paper>
+                );
+              })}
+            </TabPanel>
           </Box>
         </Stack>
       </Container>
       {showModal()}
+      <AddProfilePictureDialog
+        open={changePicture}
+        handleClose={handleCloseChangePicture}
+      />
     </Grid>
   );
 };
-export default UserProfile;
+export default Profile;

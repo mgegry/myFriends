@@ -3,9 +3,9 @@ import { Stack } from "@mui/system";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Post from "../../components/Post";
-import SearchBar from "../../components/SearchBar";
-import authHeader from "../../services/authentication/auth-header";
+import Post from "../../../components/Post";
+import SearchBar from "../../../components/SearchBar";
+import authHeader from "../../../services/authentication/auth-header";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
