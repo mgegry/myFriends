@@ -19,6 +19,7 @@ import {
 import { Stack } from "@mui/system";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import authHeader from "../services/authentication/auth-header";
 import dateUtils from "../utils/dateUtils";
 
@@ -110,6 +111,11 @@ const Post = ({ postEntity }) => {
       });
   }, []);
 
+  const navigate = useNavigate();
+  const handleUserProfile = (username) => {
+    navigate(`/${username}`);
+  };
+
   return (
     <Card>
       <CardHeader
@@ -189,7 +195,13 @@ const Post = ({ postEntity }) => {
                             : ""
                         }
                       />
-                      <Typography fontSize={14}>
+                      <Typography
+                        fontSize={14}
+                        onClick={() => {
+                          handleUserProfile(comment.user.username);
+                        }}
+                        sx={{ cursor: "pointer" }}
+                      >
                         <b>{comment.user.username}</b>
                       </Typography>
                       <Typography fontSize={12}>
