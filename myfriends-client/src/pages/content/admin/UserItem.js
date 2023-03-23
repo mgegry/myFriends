@@ -31,13 +31,12 @@ const UserItem = () => {
   }, [userId]);
 
   const handleBack = () => {
-    navigate("/admin");
+    navigate("/admin/users");
   };
 
   return (
-    <Grid container sx={{ padding: "20px" }}>
-      <Grid item xs={1}></Grid>
-      <Grid item xs={10}>
+    <Grid container>
+      <Grid item xs={12}>
         <Stack spacing={2}>
           <Paper
             sx={{
@@ -133,7 +132,6 @@ const UserItem = () => {
           <Outlet />
         </Stack>
       </Grid>
-      <Grid item xs={1}></Grid>
     </Grid>
   );
 };

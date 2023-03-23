@@ -51,7 +51,7 @@ const CommentsUserAdmin = () => {
     <Stack spacing={2}>
       {comments.map((comment, index) => {
         return (
-          <Paper sx={{ padding: "20px" }} elevation={2}>
+          <Paper key={comment.id} sx={{ padding: "20px" }} elevation={2}>
             <Stack spacing={2}>
               <div
                 style={{

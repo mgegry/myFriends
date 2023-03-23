@@ -86,72 +86,66 @@ const UserList = () => {
   };
 
   return (
-    <Grid container>
-      <Grid item xs={1}></Grid>
-      <Grid item xs={10} sx={{ padding: "20px" }}>
-        <Stack spacing={2}>
-          <SearchBar barWidth={"100%"} handleOnChange={handleOnSearchChange} />
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  {headCells.map((cell) => {
-                    return (
-                      <TableCell key={cell.id}>
-                        <Typography>
-                          <b>{cell.label}</b>
-                        </Typography>
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              </TableHead>
+    <Stack spacing={2} sx={{ width: "100%" }}>
+      <SearchBar barWidth={"100%"} handleOnChange={handleOnSearchChange} />
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              {headCells.map((cell) => {
+                return (
+                  <TableCell key={cell.id}>
+                    <Typography>
+                      <b>{cell.label}</b>
+                    </Typography>
+                  </TableCell>
+                );
+              })}
+            </TableRow>
+          </TableHead>
 
-              <TableBody>
-                {users.map((user, index) => {
-                  return (
-                    <TableRow key={user.id}>
-                      <TableCell
-                        sx={{ cursor: "pointer" }}
-                        onClick={() => {
-                          handleUserProfile(user.id);
-                        }}
-                      >
-                        <b>{user.id}</b>
-                      </TableCell>
-                      <TableCell
-                        sx={{ cursor: "pointer" }}
-                        onClick={() => {
-                          handleUserProfile(user.id);
-                        }}
-                      >
-                        <b>{user.username}</b>
-                      </TableCell>
-                      <TableCell>{user.firstName}</TableCell>
-                      <TableCell>{user.lastName}</TableCell>
-                      <TableCell>{user.email}</TableCell>
-                      <TableCell>
-                        {dateUtils.getDateAndTime(user.createdAt)}
-                      </TableCell>
-                      <TableCell>
-                        <IconButton
-                          onClick={() => {
-                            handleDelete(user.id, index);
-                          }}
-                        >
-                          <Delete />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Stack>
-      </Grid>
-      <Grid item xs={1}></Grid>
-    </Grid>
+          <TableBody>
+            {users.map((user, index) => {
+              return (
+                <TableRow key={user.id}>
+                  <TableCell
+                    sx={{ cursor: "pointer" }}
+                    onClick={() => {
+                      handleUserProfile(user.id);
+                    }}
+                  >
+                    <b>{user.id}</b>
+                  </TableCell>
+                  <TableCell
+                    sx={{ cursor: "pointer" }}
+                    onClick={() => {
+                      handleUserProfile(user.id);
+                    }}
+                  >
+                    <b>{user.username}</b>
+                  </TableCell>
+                  <TableCell>{user.firstName}</TableCell>
+                  <TableCell>{user.lastName}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>
+                    {dateUtils.getDateAndTime(user.createdAt)}
+                  </TableCell>
+                  <TableCell>
+                    <IconButton
+                      onClick={() => {
+                        handleDelete(user.id, index);
+                      }}
+                    >
+                      <Delete />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Stack>
   );
 };
 

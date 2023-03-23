@@ -26,7 +26,7 @@ const Unauthorized = () => {
             <h4>You are not allowed to access the requested resource.</h4>
           </Alert>
 
-          <Button href="./login" variant="outlined">
+          <Button href="/login" variant="outlined">
             Back to login
           </Button>
         </Stack>

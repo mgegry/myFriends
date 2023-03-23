@@ -9,7 +9,6 @@ import Root from "./pages/Root";
 import Home from "./pages/content/user/Home";
 import Profile from "./pages/content/user/Profile";
 import Notifications from "./pages/content/user/Notifications";
-import Settings from "./pages/content/user/Settings";
 import UserProfile from "./pages/content/user/UserProfile";
 import HomeAdmin from "./pages/content/admin/HomeAdmin";
 import UserList from "./pages/content/admin/UserList";
@@ -17,6 +16,7 @@ import UserItem from "./pages/content/admin/UserItem";
 import PostsUserAdmin from "./components/admin/PostsUserAdmin";
 import CommentsUserAdmin from "./components/admin/CommentsUserAdmin";
 import LikesUserAdmin from "./components/admin/LikesUserAdmin";
+import PostList from "./pages/content/admin/PostList";
 
 const router = createBrowserRouter([
   {
@@ -54,23 +54,32 @@ const router = createBrowserRouter([
   {
     path: "/admin",
     element: <HomeAdmin />,
-    children: [{ path: "/admin", element: <UserList /> }],
-  },
-  {
-    path: "/admin/users/:userId/",
-    element: <UserItem />,
     children: [
       {
-        path: "/admin/users/:userId/posts",
-        element: <PostsUserAdmin />,
+        path: "/admin/users",
+        element: <UserList />,
       },
       {
-        path: "/admin/users/:userId/comments",
-        element: <CommentsUserAdmin />,
+        path: "/admin/users/:userId/",
+        element: <UserItem />,
+        children: [
+          {
+            path: "/admin/users/:userId/posts",
+            element: <PostsUserAdmin />,
+          },
+          {
+            path: "/admin/users/:userId/comments",
+            element: <CommentsUserAdmin />,
+          },
+          {
+            path: "/admin/users/:userId/likes",
+            element: <LikesUserAdmin />,
+          },
+        ],
       },
       {
-        path: "/admin/users/:userId/likes",
-        element: <LikesUserAdmin />,
+        path: "/admin/posts",
+        element: <PostList />,
       },
     ],
   },
