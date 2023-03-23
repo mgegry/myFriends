@@ -1,11 +1,12 @@
-import { List, Paper, Stack, Typography } from "@mui/material";
+import { Delete } from "@mui/icons-material";
+import { IconButton, List, Paper, Stack, Typography } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import authHeader from "../../services/authentication/auth-header";
 import dateUtils from "../../utils/dateUtils";
 
-const PostCard = ({ postEntity }) => {
+const PostCard = ({ postEntity, posts, setPosts }) => {
   const [post, sePost] = useState(postEntity);
   const [comments, setComments] = useState([]);
   const [likes, setLikes] = useState([]);
@@ -39,6 +40,26 @@ const PostCard = ({ postEntity }) => {
     navigate(`/admin/users/${userId}/`);
   };
 
+  const handleDeleteFromParentArray = () => {
+    var copy = [...posts];
+
+    copy = copy.filter((p) => {
+      return p.id !== post.id;
+    });
+    setPosts(copy);
+  };
+
+  const handleIconDelete = () => {
+    axios
+      .delete(
+        process.env.REACT_APP_BASE_API_URL + `admin/posts/${post.id}`,
+        config
+      )
+      .then(() => {
+        handleDeleteFromParentArray();
+      });
+  };
+
   return (
     <Paper
       sx={{
@@ -52,14 +73,19 @@ const PostCard = ({ postEntity }) => {
       }}
       elevation={5}
     >
-      {/* <div
+      <div
         style={{
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "flex-end",
           alignItems: "center",
           alignContent: "center",
         }}
-      > */}
+      >
+        <IconButton onClick={handleIconDelete}>
+          <Delete />
+        </IconButton>
+      </div>
+
       <Stack direction={"row"} spacing={10} alignItems="center">
         <img
           src={post.imageUrl}
@@ -91,8 +117,6 @@ const PostCard = ({ postEntity }) => {
           </Typography>
         </Stack>
       </Stack>
-
-      {/* </div> */}
 
       <Stack direction={"row"} spacing={2}>
         <Stack sx={{ width: "50%" }}>

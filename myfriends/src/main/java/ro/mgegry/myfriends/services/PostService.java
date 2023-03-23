@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ro.mgegry.myfriends.models.Comment;
 import ro.mgegry.myfriends.models.Post;
 import ro.mgegry.myfriends.models.User;
@@ -88,5 +89,14 @@ public class PostService {
      */
     public ResponseEntity<?> getPostsForUserWithId(Long userId) {
         return new ResponseEntity<>(postRepository.findByUserId(userId), HttpStatus.OK);
+    }
+
+    @Transactional
+    public ResponseEntity<?> deletePostById(Long postId) {
+        commentRepository.deleteCommentsForPost(postId);
+        likeRepository.deleteAllLikesForPost(postId);
+        postRepository.deleteById(postId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

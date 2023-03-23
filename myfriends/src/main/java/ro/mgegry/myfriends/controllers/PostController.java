@@ -48,4 +48,10 @@ public class PostController {
         return postService.getPostsForUserWithId(userId);
     }
 
+    @DeleteMapping("admin/posts/{postId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?>  deletePostById(@PathVariable Long postId) {
+        return postService.deletePostById(postId);
+    }
+
 }

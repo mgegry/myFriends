@@ -25,7 +25,14 @@ const PostsUserAdmin = () => {
   return (
     <Stack spacing={2}>
       {posts.map((post) => {
-        return <PostCard key={post.id} postEntity={post} />;
+        return (
+          <PostCard
+            key={post.id}
+            postEntity={post}
+            posts={posts}
+            setPosts={setPosts}
+          />
+        );
       })}
     </Stack>
   );
