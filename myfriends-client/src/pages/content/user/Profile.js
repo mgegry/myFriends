@@ -322,7 +322,11 @@ const Profile = () => {
         open={changePicture}
         handleClose={handleCloseChangePicture}
       />
-      <SettingsModal open={openSettings} handleClose={handleCloseSettings} />
+      <SettingsModal
+        open={openSettings}
+        handleClose={handleCloseSettings}
+        setUser={setRequestUser}
+      />
     </Grid>
   );
 };

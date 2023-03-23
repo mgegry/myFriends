@@ -92,6 +92,10 @@ public class UserService {
             user.setProfilePicture(request.getProfilePicture());
         }
 
+        if(request.getBio() != null) {
+            user.setBio(request.getBio());
+        }
+
         return new ResponseEntity<>(userRepository.save(user), HttpStatus.CREATED);
     }
 

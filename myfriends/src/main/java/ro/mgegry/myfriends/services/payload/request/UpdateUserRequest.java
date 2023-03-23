@@ -14,4 +14,6 @@ public class UpdateUserRequest {
     private String email;
 
     private String profilePicture;
+
+    private String bio;
 }
