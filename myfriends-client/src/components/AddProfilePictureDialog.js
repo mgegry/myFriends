@@ -34,7 +34,6 @@ const AddProfilePictureDialog = ({ open, handleClose }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const file = e.target[0]?.files[0];
-    console.log(e.target);
     if (!file) return;
     const storageRef = ref(storage, `profile_pictures/${file.name}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
@@ -59,7 +58,7 @@ const AddProfilePictureDialog = ({ open, handleClose }) => {
           };
 
           const body = {
-            pictureUrl: downloadURL,
+            profilePicture: downloadURL,
           };
 
           axios
@@ -69,9 +68,6 @@ const AddProfilePictureDialog = ({ open, handleClose }) => {
               config
             )
             .then((response) => {})
-            .catch((err) => {
-              console.log(err);
-            })
             .finally(() => {});
 
           close();

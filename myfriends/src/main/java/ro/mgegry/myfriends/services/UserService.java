@@ -11,6 +11,7 @@ import ro.mgegry.myfriends.models.User;
 import ro.mgegry.myfriends.repositories.*;
 import ro.mgegry.myfriends.security.jwt.JwtUtils;
 import ro.mgegry.myfriends.services.payload.request.UpdateProfilePictureRequest;
+import ro.mgegry.myfriends.services.payload.request.UpdateUserRequest;
 import ro.mgegry.myfriends.services.payload.response.ProfileResponse;
 
 import java.util.ArrayList;
@@ -56,6 +57,44 @@ public class UserService {
         return new ResponseEntity<>(user.get(), HttpStatus.OK);
     }
 
+    public ResponseEntity<?> updateUser(String username, String authorization, UpdateUserRequest request) {
+        if (!jwtUtils.checkAuthorizationForUsername(username, authorization)) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        Optional<User> userOptional = userRepository.findByUsername(username);
+
+        if (!userOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        User user = userOptional.get();
+        if(request.getEmail() != null) {
+            if (!userRepository.existsByEmail(request.getEmail())) {
+                user.setEmail(request.getEmail());
+            }
+        }
+        if(request.getFirstName() != null) {
+            user.setFirstName(request.getFirstName());
+        }
+
+        if(request.getLastName() != null) {
+            user.setLastName(request.getLastName());
+        }
+
+        if(request.getUsername() != null) {
+            if (!userRepository.existsByUsername(request.getUsername())) {
+                user.setUsername(request.getUsername());
+            }
+        }
+
+        if(request.getProfilePicture() != null) {
+            user.setProfilePicture(request.getProfilePicture());
+        }
+
+        return new ResponseEntity<>(userRepository.save(user), HttpStatus.CREATED);
+    }
+
     public ResponseEntity<?> getProfile(String username) {
 
         Optional<User> userOptional = userRepository.findByUsername(username);
@@ -77,17 +116,6 @@ public class UserService {
 
 
         return new ResponseEntity<>(profileResponse, HttpStatus.OK);
-    }
-
-    @Transactional
-    public ResponseEntity<?> updateProfilePicture(String token, UpdateProfilePictureRequest body) {
-
-        String username = jwtUtils.getUserNameFromJwtToken(token.substring(7));
-        String url = body.getPictureUrl();
-
-        userRepository.updateProfilePicture(username, url);
-
-        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
     // ADMIN methods

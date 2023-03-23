@@ -48,15 +48,6 @@ const Navigation = () => {
             }}
           />
           <CustomLink
-            title="Profile"
-            color={COLORS.textSecondary}
-            hoverColor={COLORS.white}
-            hoverBackgroundColor={COLORS.primary}
-            onClick={() => {
-              navigate("/profile");
-            }}
-          />
-          <CustomLink
             title="Requests"
             color={COLORS.textSecondary}
             hoverColor={COLORS.white}
@@ -66,12 +57,12 @@ const Navigation = () => {
             }}
           />
           <CustomLink
-            title="Settings"
+            title="Profile"
             color={COLORS.textSecondary}
             hoverColor={COLORS.white}
             hoverBackgroundColor={COLORS.primary}
             onClick={() => {
-              navigate("/settings");
+              navigate("/profile");
             }}
           />
           <CustomLink

@@ -1,4 +1,4 @@
-import { Delete, Notes } from "@mui/icons-material";
+import { Delete, Notes, Settings } from "@mui/icons-material";
 import {
   Avatar,
   Grid,
@@ -18,6 +18,7 @@ import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AddProfilePictureDialog from "../../../components/AddProfilePictureDialog";
+import SettingsModal from "../../../components/SettingsModal";
 import PostModal from "../../../components/PostModal";
 import authHeader from "../../../services/authentication/auth-header";
 import dateUtils from "../../../utils/dateUtils";
@@ -84,7 +85,7 @@ const Profile = () => {
       });
   };
 
-  const showModal = () => {
+  const showPostModal = () => {
     return <PostModal open={open} handleClose={handleClose} post={modalPost} />;
   };
 
@@ -152,12 +153,28 @@ const Profile = () => {
     navigate(`/${username}`);
   };
 
+  const [openSettings, setOpenSettings] = React.useState(false);
+  const handleSettings = () => {
+    setOpenSettings(true);
+  };
+
+  const handleCloseSettings = () => {
+    setOpenSettings(false);
+  };
+
   return (
     <Grid container>
       <Container maxWidth="md">
         <Stack sx={{ width: "100%", alignItems: "" }} spacing={5}>
           {/* Profile info */}
-          <Paper sx={{ padding: "20px", minHeight: "17vh" }}>
+          <Paper
+            sx={{
+              padding: "20px",
+              minHeight: "17vh",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
             <Stack direction={"row"} spacing={10}>
               <div onClick={handleOpenChangePicture}>
                 <Avatar
@@ -205,6 +222,11 @@ const Profile = () => {
                 </Stack>
               </Stack>
             </Stack>
+            <div>
+              <IconButton onClick={handleSettings}>
+                <Settings />
+              </IconButton>
+            </div>
           </Paper>
 
           {/* Profile content */}
@@ -295,11 +317,12 @@ const Profile = () => {
           </Box>
         </Stack>
       </Container>
-      {showModal()}
+      {showPostModal()}
       <AddProfilePictureDialog
         open={changePicture}
         handleClose={handleCloseChangePicture}
       />
+      <SettingsModal open={openSettings} handleClose={handleCloseSettings} />
     </Grid>
   );
 };

@@ -46,10 +46,6 @@ const router = createBrowserRouter([
         element: <Notifications />,
       },
       {
-        path: "/settings",
-        element: <Settings />,
-      },
-      {
         path: "/:username",
         element: <UserProfile />,
       },
