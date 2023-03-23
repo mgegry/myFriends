@@ -27,7 +27,6 @@ const CommentsUserAdmin = () => {
       )
       .then((response) => {
         setComments(response.data);
-        console.log(response.data);
       });
   }, []);
 

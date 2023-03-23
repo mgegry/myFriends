@@ -3,6 +3,7 @@ import {
   Grid,
   IconButton,
   Paper,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -16,10 +17,11 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import authHeader from "../../../services/authentication/auth-header";
 import dateUtils from "../../../utils/dateUtils";
+import SearchBar from "../../../components/SearchBar";
+
 const UserList = () => {
   const [users, setUsers] = useState([]);
-  //   const [orderBy, setOrderBy] = useState("");
-  //   const [order, setOrder] = useState("asc");
+  const [copyUsers, setCopyUsers] = useState([]);
 
   const navigate = useNavigate();
 
@@ -42,6 +44,7 @@ const UserList = () => {
       .get(process.env.REACT_APP_BASE_API_URL + "admin/users", config)
       .then((response) => {
         setUsers(response.data);
+        setCopyUsers(response.data);
       });
   }, []);
 
@@ -62,116 +65,90 @@ const UserList = () => {
       });
   };
 
-  //   function stableSort(array, comparator) {
-  //     const stabilizedThis = array.map((el, index) => [el, index]);
-  //     stabilizedThis.sort((a, b) => {
-  //       const order = comparator(a[0], b[0]);
-  //       if (order !== 0) {
-  //         return order;
-  //       }
-  //       return a[1] - b[1];
-  //     });
-  //     return stabilizedThis.map((el) => el[0]);
-  //   }
+  const handleOnSearchChange = (event) => {
+    const searchValue = event.target.value.replace(/\s/g, "");
 
-  //   const handleSelectChange = (event) => {
-  //     setOrderBy(event.target.value);
-  //   };
+    if (searchValue.length >= 3) {
+      var copy = [...users];
+      copy = copy.filter((u) => {
+        return (
+          u.username.includes(searchValue) ||
+          u.firstName.includes(searchValue) ||
+          u.lastName.includes(searchValue) ||
+          u.email.includes(searchValue)
+        );
+      });
 
-  //   const handleSelectOrder = (event) => {
-  //     setOrder(event.target.value);
-  //   };
+      setUsers(copy);
+    } else {
+      setUsers(copyUsers);
+    }
+  };
 
   return (
     <Grid container>
       <Grid item xs={1}></Grid>
       <Grid item xs={10} sx={{ padding: "20px" }}>
-        {/* <Paper sx={{ padding: "20px", marginBottom: "10px" }}>
-          <Stack direction={"row"} spacing={10} alignItems={"center"}>
-            <Typography>Filter by:</Typography>
-            <Stack direction={"row"} sx={{ width: "100%" }} spacing={10}>
-              <FormControl fullWidth>
-                <InputLabel>Column</InputLabel>
-                <Select value={orderBy} onChange={handleSelectChange}>
+        <Stack spacing={2}>
+          <SearchBar barWidth={"100%"} handleOnChange={handleOnSearchChange} />
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
                   {headCells.map((cell) => {
-                    if (cell.id !== "delete") {
-                      return (
-                        <MenuItem key={cell.id} value={cell.label}>
-                          {cell.label}
-                        </MenuItem>
-                      );
-                    }
-                    return null;
+                    return (
+                      <TableCell key={cell.id}>
+                        <Typography>
+                          <b>{cell.label}</b>
+                        </Typography>
+                      </TableCell>
+                    );
                   })}
-                </Select>
-              </FormControl>
-              <FormControl fullWidth>
-                <InputLabel>Order</InputLabel>
-                <Select value={orderBy} onChange={handleSelectOrder}>
-                  <MenuItem value={"asc"}>Ascending</MenuItem>
-                  <MenuItem value={"desc"}>Descending</MenuItem>
-                </Select>
-              </FormControl>
-            </Stack>
-          </Stack>
-        </Paper> */}
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                {headCells.map((cell) => {
-                  return (
-                    <TableCell key={cell.id}>
-                      <Typography>
-                        <b>{cell.label}</b>
-                      </Typography>
-                    </TableCell>
-                  );
-                })}
-              </TableRow>
-            </TableHead>
+                </TableRow>
+              </TableHead>
 
-            <TableBody>
-              {users.map((user, index) => {
-                return (
-                  <TableRow key={user.id}>
-                    <TableCell
-                      sx={{ cursor: "pointer" }}
-                      onClick={() => {
-                        handleUserProfile(user.id);
-                      }}
-                    >
-                      <b>{user.id}</b>
-                    </TableCell>
-                    <TableCell
-                      sx={{ cursor: "pointer" }}
-                      onClick={() => {
-                        handleUserProfile(user.id);
-                      }}
-                    >
-                      <b>{user.username}</b>
-                    </TableCell>
-                    <TableCell>{user.firstName}</TableCell>
-                    <TableCell>{user.lastName}</TableCell>
-                    <TableCell>{user.email}</TableCell>
-                    <TableCell>
-                      {dateUtils.getDateAndTime(user.createdAt)}
-                    </TableCell>
-                    <TableCell>
-                      <IconButton
+              <TableBody>
+                {users.map((user, index) => {
+                  return (
+                    <TableRow key={user.id}>
+                      <TableCell
+                        sx={{ cursor: "pointer" }}
                         onClick={() => {
-                          handleDelete(user.id, index);
+                          handleUserProfile(user.id);
                         }}
                       >
-                        <Delete />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
+                        <b>{user.id}</b>
+                      </TableCell>
+                      <TableCell
+                        sx={{ cursor: "pointer" }}
+                        onClick={() => {
+                          handleUserProfile(user.id);
+                        }}
+                      >
+                        <b>{user.username}</b>
+                      </TableCell>
+                      <TableCell>{user.firstName}</TableCell>
+                      <TableCell>{user.lastName}</TableCell>
+                      <TableCell>{user.email}</TableCell>
+                      <TableCell>
+                        {dateUtils.getDateAndTime(user.createdAt)}
+                      </TableCell>
+                      <TableCell>
+                        <IconButton
+                          onClick={() => {
+                            handleDelete(user.id, index);
+                          }}
+                        >
+                          <Delete />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Stack>
       </Grid>
       <Grid item xs={1}></Grid>
     </Grid>
