@@ -21,65 +21,57 @@ const Navigation = () => {
   };
 
   return (
-    <Grid container sx={{ alignItems: "center" }}>
-      <Stack spacing={5} sx={{ width: "100%" }}>
-        <Typography color={COLORS.textPrimary} fontSize={"2rem"} align="center">
-          <u>
-            <b>myFriends</b>
-          </u>
-        </Typography>
-        <Stack spacing={4} sx={{ paddingLeft: "5%" }}>
-          <CustomLink
-            title="Home"
-            color={COLORS.textSecondary}
-            hoverColor={COLORS.white}
-            hoverBackgroundColor={COLORS.primary}
-            onClick={() => {
-              navigate("/");
-            }}
-          />
-          <CustomLink
-            title="Add Post"
-            color={COLORS.textSecondary}
-            hoverColor={COLORS.white}
-            hoverBackgroundColor={COLORS.primary}
-            onClick={() => {
-              handleClickOpen();
-            }}
-          />
-          <CustomLink
-            title="Requests"
-            color={COLORS.textSecondary}
-            hoverColor={COLORS.white}
-            hoverBackgroundColor={COLORS.primary}
-            onClick={() => {
-              navigate("/notifications");
-            }}
-          />
-          <CustomLink
-            title="Profile"
-            color={COLORS.textSecondary}
-            hoverColor={COLORS.white}
-            hoverBackgroundColor={COLORS.primary}
-            onClick={() => {
-              navigate("/profile");
-            }}
-          />
-          <CustomLink
-            title="Log out"
-            onClick={() => {
-              localStorage.removeItem("user");
-              navigate("./login");
-            }}
-            color="#DB3A34"
-            hoverColor={COLORS.white}
-            hoverBackgroundColor="#DB3A34"
-          />
-        </Stack>
+    <Stack spacing={5}>
+      <Stack spacing={4} sx={{ paddingLeft: "5%" }}>
+        <CustomLink
+          title="Home"
+          color={COLORS.textSecondary}
+          hoverColor={COLORS.white}
+          hoverBackgroundColor={COLORS.primary}
+          onClick={() => {
+            navigate("/");
+          }}
+        />
+        <CustomLink
+          title="Add Post"
+          color={COLORS.textSecondary}
+          hoverColor={COLORS.white}
+          hoverBackgroundColor={COLORS.primary}
+          onClick={() => {
+            handleClickOpen();
+          }}
+        />
+        <CustomLink
+          title="Requests"
+          color={COLORS.textSecondary}
+          hoverColor={COLORS.white}
+          hoverBackgroundColor={COLORS.primary}
+          onClick={() => {
+            navigate("/notifications");
+          }}
+        />
+        <CustomLink
+          title="Profile"
+          color={COLORS.textSecondary}
+          hoverColor={COLORS.white}
+          hoverBackgroundColor={COLORS.primary}
+          onClick={() => {
+            navigate("/profile");
+          }}
+        />
+        <CustomLink
+          title="Log out"
+          onClick={() => {
+            localStorage.removeItem("user");
+            navigate("./login");
+          }}
+          color="#DB3A34"
+          hoverColor={COLORS.white}
+          hoverBackgroundColor="#DB3A34"
+        />
       </Stack>
-
       <AddPostDialog handleClose={handleClose} open={open} />
-    </Grid>
+    </Stack>
   );
 };
 

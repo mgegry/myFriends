@@ -1,4 +1,4 @@
-import { Grid, List, Paper } from "@mui/material";
+import { Grid, List, Paper, Typography } from "@mui/material";
 import { margin, Stack } from "@mui/system";
 import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
@@ -23,12 +23,21 @@ const HomeAdmin = () => {
 
   if (authenticated && authenticated.roles.includes("ROLE_ADMIN")) {
     return (
-      <Grid container justifyContent="center" alignItems={"center"}>
-        <Grid item xs={2}>
+      <Grid container>
+        <Grid item xs={2} sx={{ paddingTop: "20px" }}>
+          <Typography
+            color={COLORS.textPrimary}
+            fontSize={"2rem"}
+            align="center"
+          >
+            <u>
+              <b>Admin Panel</b>
+            </u>
+          </Typography>
           <Paper
             sx={{
               margin: "20px",
-              height: "40vh",
+              height: "30vh",
               paddingLeft: "20px",
               display: "flex",
               flexDirection: "column",
