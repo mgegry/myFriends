@@ -35,9 +35,22 @@ const CommentsUserAdmin = () => {
     navigate(`/admin/users/${userId}`);
   };
 
+  const handleIconDelete = (commentId, index) => {
+    axios
+      .delete(
+        process.env.REACT_APP_BASE_API_URL + `admin/comments/${commentId}`,
+        config
+      )
+      .then(() => {
+        var copy = [...comments];
+        copy.splice(index, 1);
+        setComments(copy);
+      });
+  };
+
   return (
     <Stack spacing={2}>
-      {comments.map((comment) => {
+      {comments.map((comment, index) => {
         return (
           <Paper sx={{ padding: "20px" }} elevation={2}>
             <Stack spacing={2}>
@@ -49,7 +62,11 @@ const CommentsUserAdmin = () => {
                   alignContent: "center",
                 }}
               >
-                <IconButton>
+                <IconButton
+                  onClick={() => {
+                    handleIconDelete(comment.id, index);
+                  }}
+                >
                   <Delete />
                 </IconButton>
               </div>

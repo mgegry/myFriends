@@ -37,7 +37,7 @@ public class CommentController {
      */
     @GetMapping("admin/comments")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> getCommentsForUserId2(
+    public ResponseEntity<?> getCommentsForUserId(
             @RequestParam(name="userId", required = false) Long userId,
             @RequestParam(name = "postId", required = false) Long postId) {
 
@@ -48,5 +48,12 @@ public class CommentController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @DeleteMapping("admin/comments/{commentId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> deleteComment(@PathVariable Long commentId) {
+        commentService.deleteCommentById(commentId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

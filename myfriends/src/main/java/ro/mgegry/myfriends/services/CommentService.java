@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.transaction.annotation.Transactional;
 import ro.mgegry.myfriends.models.Comment;
 import ro.mgegry.myfriends.repositories.CommentRepository;
 import ro.mgegry.myfriends.security.jwt.JwtUtils;
@@ -37,7 +37,7 @@ public class CommentService {
      * @param postId the post id for which to get the comments
      * @return a list of comments and a status code
      */
-    public ResponseEntity<?> getCommentsForPostId(@PathVariable Long postId) {
+    public ResponseEntity<?> getCommentsForPostId(Long postId) {
         return new ResponseEntity<>(commentRepository.findByPostId(postId), HttpStatus.OK);
     }
 
@@ -46,7 +46,13 @@ public class CommentService {
      * @param userId the user for which to get the comments
      * @return a list of comments and a status code
      */
-    public ResponseEntity<?> getCommentsForUserId(@PathVariable Long userId) {
+    public ResponseEntity<?> getCommentsForUserId(Long userId) {
         return new ResponseEntity<>(commentRepository.findByUserId(userId), HttpStatus.OK);
+    }
+
+    @Transactional
+    public ResponseEntity<?> deleteCommentById(Long commentId) {
+        commentRepository.deleteCommentById(commentId);
+        return new ResponseEntity<>( HttpStatus.OK);
     }
 }
