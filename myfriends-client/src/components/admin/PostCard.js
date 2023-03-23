@@ -18,7 +18,10 @@ const PostCard = ({ postEntity }) => {
 
   useEffect(() => {
     axios
-      .get(process.env.REACT_APP_BASE_API_URL + `comments/${post.id}`, config)
+      .get(
+        process.env.REACT_APP_BASE_API_URL + `admin/comments?postId=${post.id}`,
+        config
+      )
       .then((response) => {
         setComments(response.data);
       });
@@ -68,6 +71,9 @@ const PostCard = ({ postEntity }) => {
         />
 
         <Stack>
+          <Typography>
+            <b>ID:</b> {post.id}
+          </Typography>
           <Typography>
             <b>Posted by:</b> {post.user.username}
           </Typography>

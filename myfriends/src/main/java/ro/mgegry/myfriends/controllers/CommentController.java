@@ -12,6 +12,7 @@ import ro.mgegry.myfriends.services.CommentService;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -30,14 +31,22 @@ public class CommentController {
     }
 
     /**
-     * Get all comments for specific post
-     * @param postId the post id for which to get the comments
-     * @return a response entity containing a list of comments and a status code
+     * Get all comments for specific user or specific post
+     * @param userId the user for which to get the comments
+     * @return a list of comments and a status code
      */
-    @GetMapping("/comments/{postId}")
+    @GetMapping("admin/comments")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> getCommentsForPostId(@PathVariable Long postId) {
-        return commentService.getCommentsForPostId(postId);
-    }
+    public ResponseEntity<?> getCommentsForUserId2(
+            @RequestParam(name="userId", required = false) Long userId,
+            @RequestParam(name = "postId", required = false) Long postId) {
 
+        if (postId == null && userId != null) {
+            return commentService.getCommentsForUserId(userId);
+        } else if (postId != null && userId == null){
+            return commentService.getCommentsForPostId(postId);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }

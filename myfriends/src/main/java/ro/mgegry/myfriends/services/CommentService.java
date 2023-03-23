@@ -35,9 +35,18 @@ public class CommentService {
     /**
      * Get all comments for specific post
      * @param postId the post id for which to get the comments
-     * @return a response entity containing a list of comments and a status code
+     * @return a list of comments and a status code
      */
     public ResponseEntity<?> getCommentsForPostId(@PathVariable Long postId) {
         return new ResponseEntity<>(commentRepository.findByPostId(postId), HttpStatus.OK);
+    }
+
+    /**
+     * Get all comments for specific user
+     * @param userId the user for which to get the comments
+     * @return a list of comments and a status code
+     */
+    public ResponseEntity<?> getCommentsForUserId(@PathVariable Long userId) {
+        return new ResponseEntity<>(commentRepository.findByUserId(userId), HttpStatus.OK);
     }
 }

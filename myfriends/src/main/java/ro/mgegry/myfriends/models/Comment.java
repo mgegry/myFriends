@@ -27,7 +27,6 @@ public class Comment implements Comparable<Comment> {
     @Column(name = "user_id")
     private Long userId;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "post_id", insertable = false, updatable = false)
     private Post post;
