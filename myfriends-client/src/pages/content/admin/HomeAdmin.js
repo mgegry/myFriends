@@ -45,7 +45,7 @@ const HomeAdmin = () => {
               borderRadius: "20px",
             }}
           >
-            <Stack spacing={3}>
+            <Stack spacing={4}>
               <CustomLink
                 title="Users"
                 color={COLORS.textSecondary}

@@ -73,13 +73,13 @@ const Home = () => {
     <Grid container>
       <Stack sx={{ width: "100%", alignItems: "center" }} spacing={5}>
         <SearchBar
-          barWidth="50%"
+          barWidth="70%"
           handleOnChange={handleOnChange}
           iconEnd={iconEnd}
           handleCancel={handleCancel}
         />
 
-        <Stack sx={{ width: "35%" }} spacing={3} display={displayContent}>
+        <Stack sx={{ width: "40%" }} spacing={3} display={displayContent}>
           {posts.map((post) => {
             return <Post key={post.post.id} postEntity={post} />;
           })}
@@ -87,7 +87,7 @@ const Home = () => {
 
         <Paper
           sx={{
-            width: "55%",
+            width: "65%",
             maxHeight: "80vh",
             overflow: "auto",
             "&::-webkit-scrollbar": {
