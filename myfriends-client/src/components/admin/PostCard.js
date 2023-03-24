@@ -30,7 +30,10 @@ const PostCard = ({ postEntity, posts, setPosts }) => {
 
   useEffect(() => {
     axios
-      .get(process.env.REACT_APP_BASE_API_URL + `likes/${post.id}`, config)
+      .get(
+        process.env.REACT_APP_BASE_API_URL + `admin/likes?postId=${post.id}`,
+        config
+      )
       .then((response) => {
         setLikes(response.data);
       });
@@ -100,7 +103,12 @@ const PostCard = ({ postEntity, posts, setPosts }) => {
           <Typography>
             <b>ID:</b> {post.id}
           </Typography>
-          <Typography>
+          <Typography
+            onClick={() => {
+              handleUserProfile(post.user.id);
+            }}
+            sx={{ cursor: "pointer" }}
+          >
             <b>Posted by:</b> {post.user.username}
           </Typography>
           <Typography>

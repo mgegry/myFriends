@@ -2,12 +2,15 @@ package ro.mgegry.myfriends.controllers;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ro.mgegry.myfriends.models.Like;
 import ro.mgegry.myfriends.services.LikeService;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/api")
@@ -39,10 +42,18 @@ public class LikeController {
      * @param postId the post ID for which to get the likes
      * @return a list containing all the likes
      */
-    @GetMapping("/likes/{postId}")
+    @GetMapping("/admin/likes")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> getLikesForPostId(@PathVariable Long postId) {
-        return likeService.getLikesForPostId(postId);
+    public ResponseEntity<?> getLikesForPostId(@RequestParam(name = "postId", required = false) Long postId,
+                                               @RequestParam(name = "userId", required = false) Long userId) {
+
+        if (postId != null) {
+            return likeService.getLikesForPostId(postId);
+        } else if (userId != null) {
+            return likeService.getLikesForUserId(userId);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
 }

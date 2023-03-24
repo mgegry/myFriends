@@ -16,7 +16,10 @@ const PostsUserAdmin = () => {
 
   useEffect(() => {
     axios
-      .get(process.env.REACT_APP_BASE_API_URL + `admin/posts/${userId}`, config)
+      .get(
+        process.env.REACT_APP_BASE_API_URL + `admin/posts?userId${userId}`,
+        config
+      )
       .then((response) => {
         setPosts(response.data);
       });

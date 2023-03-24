@@ -42,13 +42,20 @@ public class PostController {
      * @param userId the ID of the user for which the posts are returned
      * @return a list of all posts and an HTTP status code
      */
-    @GetMapping("admin/posts/{userId}")
+    @GetMapping("/admin/posts")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> getPostsForUserWithId(@PathVariable Long userId) {
-        return postService.getPostsForUserWithId(userId);
+    public ResponseEntity<?> getPostsForUserWithId(@RequestParam(name = "userId", required = false) Long userId) {
+
+        if (userId != null) {
+            return postService.getPostsForUserWithId(userId);
+        } else {
+            return postService.getPosts();
+        }
+
+
     }
 
-    @DeleteMapping("admin/posts/{postId}")
+    @DeleteMapping("/admin/posts/{postId}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?>  deletePostById(@PathVariable Long postId) {
         return postService.deletePostById(postId);

@@ -99,4 +99,9 @@ public class PostService {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    public ResponseEntity<?> getPosts() {
+
+        return new ResponseEntity<>(postRepository.findAll(), HttpStatus.OK);
+    }
 }
